@@ -20,6 +20,13 @@ function Todo() {
 
 
   const handleAlltodos = () => {
+
+    if (newTitle.length=== 0 || newDescription.length===0) {
+      // Alert or display a message if either field is empty
+      alert("Both Title and Description are required!");
+      return;
+    }
+
     let newTodolist = {
       title: newTitle,
       Description: newDescription
@@ -167,7 +174,7 @@ function Todo() {
                     <p>{item.Description}</p>
                   </div>
 
-                  <div>
+                  <div className='all-btn'>
                     <AiOutlineDelete className='delete-icon' onClick={() => handleDeleteTodo(index)} />
                     <FaCheck className='check-icon' onClick={() => handleCompletedTodo(index)} />
                     <AiOutlineEdit className='edit-icon' onClick={() => handleEdit(index,item)} />
@@ -179,7 +186,7 @@ function Todo() {
           {isCompleteScreen === true && completedTodo.map((item, index) => {
             return (
               <div className='todo-list-item' key={index}>
-                <div>
+                <div >
                   <h3>{item.title}</h3>
                   <p>{item.Description}</p>
                   <p>Completed On: {item.CompletedOn}</p>

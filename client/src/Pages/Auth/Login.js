@@ -157,7 +157,7 @@ const Login = () => {
     try {
       const response = await api.post('/login', formData);
       login(response.data.token);
-      alert(response.data.message || "Login successful");
+      // alert(response.data.message || "Login successful");
       navigate('/todo');
     } catch (err) {
       const status = err.response?.status;

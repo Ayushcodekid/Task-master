@@ -1,100 +1,292 @@
-body{
+body {
+  background-color: #1f1e1e;
+  color: white;
+  overflow: hidden;
+}
+
+
+h1 {
+  text-align: center;
+}
+
+.todo-wrapper {
+  background: #353434;
+  padding: 2%;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0px 5px px rgb(53, 51, 51);
+}
+
+.todo-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid grey;
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+
+}
+
+
+.todo-input-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 25px;
+}
+
+.todo-input-item label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+
+.todo-input-item input {
+  padding: 8px;
+  border: none;
+  width: 250px;
+}
+
+.todo-input-item input:focus {
+  outline: 2px solid blue;
+}
+
+
+.primaryBtn {
+  background-color: rgb(109, 245, 109);
+  color: white;
+  border: none;
+  border-radius: 0px;
+  margin-top: 25px;
+  padding: 10px;
+  width: 60px;
+  cursor: pointer;
+}
+
+
+.primaryBtn:hover {
+  background-color: rgb(52, 160, 52);
+}
+
+.secondaryBtn {
+  background-color: rgb(83, 90, 83);
+  color: white;
+  border: none;
+  border-radius: 0px;
+  margin-top: 25px;
+  padding: 10px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+
+.active {
+  background-color: rgb(52, 160, 52);
+
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-list-item {
+  background-color: rgb(29, 28, 28);
+  display: flex;
+  justify-content: space-between;
+  padding: 25px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  align-items: center;
+  box-shadow: 0px 3px 5px rgb(56, 55, 55);
+
+
+}
+
+
+.btn-area {
+  margin-bottom: 15px;
+}
+
+
+.todo-list-item h3 {
+  font-size: 25px;
+  color: rgb(153, 243, 153);
+  font-weight: bold;
+  margin: 0;
+}
+
+.todo-list-item p {
+  font-size: 14px;
+  color: rgb(223, 231, 223);
+  margin-top: 0px;
+}
+
+.delete-icon {
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  color: red;
+}
+
+.check-icon {
+  font-size: 35px;
+  cursor: pointer;
+  color: rgb(153, 243, 153);
+}
+
+.check-icon:hover {
+  color: green;
+}
+
+
+
+.edit_wrapper {
+  background-color: gray;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.edit_wrapper input,
+.edit_wrapper textarea {
+  border: 1px solid rgb(202, 197, 197);
+  padding: 10px;
+  margin: 5px;
+  border-radius: 3px;
+}
+
+
+
+.edit_wrapper .primaryBtn {
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+}
+
+.all-btn{
+  gap: 1vh;
+  display: flex;
+}
+
+
+
+
+
+@media only screen and (max-width: 780px) {
+
+  body {
     background-color: #1f1e1e;
     color: white;
     overflow: hidden;
   }
-  
-  
-  h1{
+
+
+  h1 {
     text-align: center;
   }
-  
-  .todo-wrapper{
+
+  .App {}
+
+  .todo-wrapper {
     background: #353434;
-    padding: 2%;
-    width: fit-content;
+    /* padding: 2%; */
+    width: 83%;
+    display: flex;
     margin-left: auto;
     margin-right: auto;
     margin-top: 3%;
-    max-height: 80vh;
+    /* height: 55vh; */
+    /* max-height: 80vh; */
     overflow-y: auto;
-    box-shadow:  0px 5px px rgb(53, 51, 51);
+    box-shadow: 0px 5px px rgb(53, 51, 51);
+    flex-direction: column;
   }
-  
-  .todo-input{
+
+  .todo-input {
     display: flex;
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid grey;
     padding-bottom: 25px;
     margin-bottom: 25px;
-  
+    flex-direction: column;
+    gap: 4vh;
+
   }
-  
-  
-  .todo-input-item{
+
+
+  .todo-input-item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-right: 25px;
   }
-  
-  .todo-input-item label{
+
+  .todo-input-item label {
     font-weight: bold;
     margin-bottom: 10px;
   }
-  
-  
-  .todo-input-item input{
+
+
+  .todo-input-item input {
     padding: 8px;
     border: none;
     width: 250px;
   }
-  
-  .todo-input-item input:focus{
+
+  .todo-input-item input:focus {
     outline: 2px solid blue;
   }
-  
-  
-  .primaryBtn{
+
+
+  .primaryBtn {
     background-color: rgb(109, 245, 109);
     color: white;
     border: none;
     border-radius: 0px;
-    margin-top: 25px;
+    margin-top: -10%;
     padding: 10px;
     width: 60px;
     cursor: pointer;
   }
-  
-  
-  .primaryBtn:hover{
+
+
+  .primaryBtn:hover {
     background-color: rgb(52, 160, 52);
   }
-  
-  .secondaryBtn{
+
+  .secondaryBtn {
     background-color: rgb(83, 90, 83);
     color: white;
     border: none;
     border-radius: 0px;
     margin-top: 25px;
     padding: 10px;
-    width: fit-content;
+    width: 30%;
     cursor: pointer;
   }
-  
-  
-  .active{
-      background-color: rgb(52, 160, 52);
-  
+
+
+  .active {
+    background-color: rgb(52, 160, 52);
+
   }
-  
-  .todo-list{
-  display: flex;
-  flex-direction: column;
+
+  .todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
   }
-  
-  .todo-list-item{
+
+  .todo-list-item {
     background-color: rgb(29, 28, 28);
     display: flex;
     justify-content: space-between;
@@ -103,70 +295,87 @@ body{
     padding-top: 10px;
     align-items: center;
     box-shadow: 0px 3px 5px rgb(56, 55, 55);
-  
-  
+
+
   }
-  
-  
-  .btn-area{
-    margin-bottom: 15px;
-  }
-  
-  
-  .todo-list-item h3{
+
+
+  .btn-area {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    }
+
+
+  .todo-list-item h3 {
     font-size: 25px;
     color: rgb(153, 243, 153);
     font-weight: bold;
     margin: 0;
   }
-  
-  .todo-list-item p{
+
+  .todo-list-item p {
     font-size: 14px;
     color: rgb(223, 231, 223);
     margin-top: 0px;
   }
-  
-  .delete-icon{
-    font-size: 35px;
+
+  .all-btn{
+    gap: 1vh;
+    display: flex;
+
+  }
+
+  .delete-icon {
+    font-size: 1.5rem;
     cursor: pointer;
   }
-  
-  .delete-icon:hover{
+
+  .delete-icon:hover {
     color: red;
   }
-  
-  .check-icon{
-    font-size: 35px;
+
+  .check-icon {
+    font-size: 1.5rem;
     cursor: pointer;
     color: rgb(153, 243, 153);
   }
-  
-  .check-icon:hover{
+
+  .check-icon:hover {
     color: green;
   }
-  
-  
-  
-  .edit_wrapper{
+
+  .edit-icon{
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+
+
+  .edit_wrapper {
     background-color: gray;
     padding: 10px;
     display: flex;
     flex-direction: column;
   }
-  
-  
-  .edit_wrapper input, .edit_wrapper textarea
-  {
-    border:  1px solid rgb(202, 197, 197);
+
+
+  .edit_wrapper input,
+  .edit_wrapper textarea {
+    border: 1px solid rgb(202, 197, 197);
     padding: 10px;
     margin: 5px;
     border-radius: 3px;
   }
-  
-  
-  
-  .edit_wrapper .primaryBtn{
+
+
+
+  .edit_wrapper .primaryBtn {
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
+    margin-top: 3%;
   }
+
+
+}
