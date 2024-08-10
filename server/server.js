@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
     'http://localhost:3000',
-    'https://codertodoapp.netlify.app/'
+    'https://codertodolist.netlify.app/'
   ];
 
   app.use(cors({
