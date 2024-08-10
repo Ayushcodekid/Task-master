@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
     'http://localhost:3000',
-    'https://codertodoapp.netlify.app'
+    'https://bespoke-palmier-13bd08.netlify.app'
   ];
 
   app.use(cors({
