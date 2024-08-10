@@ -127,7 +127,7 @@ h1 {
 }
 
 .delete-icon {
-  font-size: 35px;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
@@ -136,13 +136,23 @@ h1 {
 }
 
 .check-icon {
-  font-size: 35px;
+  font-size: 1.5rem;
   cursor: pointer;
   color: rgb(153, 243, 153);
 }
 
 .check-icon:hover {
   color: green;
+}
+
+.edit-icon{
+  font-size: 1.5rem;
+  cursor: pointer;
+
+}
+
+.edit-icon:hover{
+  color: aqua;
 }
 
 

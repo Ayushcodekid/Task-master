@@ -36,6 +36,8 @@ function Todo() {
     updatedTodoArr.push(newTodolist);
     setallTodos(updatedTodoArr);
     localStorage.setItem('Todolist', JSON.stringify(updatedTodoArr))
+    setnewTitle('')
+    setnewDescription('')
   }
 
 
