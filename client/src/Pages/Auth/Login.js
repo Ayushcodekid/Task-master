@@ -104,9 +104,8 @@
 
 
 import React, { useState } from "react";
-import { login } from "../../auth";
+import { Link, useNavigate } from 'react-router-dom';
 import api from "../../api";
-import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
 
 const Login = () => {
@@ -156,8 +155,15 @@ const Login = () => {
 
     try {
       const response = await api.post('/login', formData);
-      login(response.data.token);
-      // alert(response.data.message || "Login successful");
+      console.log('API Response:', response.data);
+      // login(response.data.token);
+
+      const {token, userId} = response.data;
+
+      localStorage.setItem('userId',userId)
+      localStorage.setItem('token',token)
+
+      
       navigate('/todo');
     } catch (err) {
       const status = err.response?.status;

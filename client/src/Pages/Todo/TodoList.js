@@ -1,15 +1,13 @@
-import './Todo.css';
 import React, { useEffect, useState } from 'react';
+import './Todo.css';
 
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
-import Navbar from "../Navbar/Navbar"
-
-
+import api from '../../api';
+import Navbar from "../Navbar/Navbar";
 
 function Todo() {
-
-  const [isCompleteScreen, setisCompleteScreen] = useState(false)
+  const [isCompleteScreen, setisCompleteScreen] = useState(false);
   const [newTitle, setnewTitle] = useState("");
   const [newDescription, setnewDescription] = useState("");
   const [allTodos, setallTodos] = useState([]);
@@ -17,138 +15,162 @@ function Todo() {
   const [currentEdit, setcurrentEdit] = useState("");
   const [currentEditedItem, setcurrentEditedItem] = useState("");
 
+  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        if (userId) {
+          const response = await api.get(`/todos/${userId}`);
+          setallTodos(response.data);
+        }
+      } catch (err) {
+        console.error("Error fetching todos:", err.response?.data?.message || err.message);
+      }
+    };
+    fetchTodos();
+  }, [userId]);
 
 
-  const handleAlltodos = () => {
+   // Call getTodos when component loads
+   useEffect(() => {
+    getTodos();
+    getCompletedTodo()
+  }, [userId]);
 
-    if (newTitle.length=== 0 || newDescription.length===0) {
-      // Alert or display a message if either field is empty
+
+
+  const getTodos = async () => {
+    try {
+      if (userId) {
+        const response = await api.get(`/todos/${userId}`);
+        setallTodos(response.data);
+      }
+    } catch (err) {
+      console.error("Error fetching todos:", err.response?.data?.message || err.message);
+    }
+  };
+
+  // Add new todo function
+  const handleAlltodos = async () => {
+    if (newTitle.length === 0 || newDescription.length === 0) {
       alert("Both Title and Description are required!");
       return;
     }
 
     let newTodolist = {
       title: newTitle,
-      Description: newDescription
+      description: newDescription,
+      userId,
+    };
+
+    try {
+      if (userId) {
+        const response = await api.post('/todos', newTodolist);
+
+        // Refetch todos after adding a new one
+        getTodos();
+
+        // Clear input fields
+        setnewTitle('');
+        setnewDescription('');
+      }
+    } catch (err) {
+      console.error("Error creating todo:", err.response?.data?.message || err.message);
     }
+  };
 
-    let updatedTodoArr = [...allTodos]
-    updatedTodoArr.push(newTodolist);
-    setallTodos(updatedTodoArr);
-    localStorage.setItem('Todolist', JSON.stringify(updatedTodoArr))
-    setnewTitle('')
-    setnewDescription('')
-  }
+ 
+  
+  const handleDeleteTodo = async (index, id) => {
+    try {
+      if (userId) {
+        await api.delete(`/todos/${userId}/${id}`);
+        setallTodos((prevTodos) => prevTodos.filter((_, i) => i !== index));
+      }
+    } catch (err) {
+      console.error("Error deleting todo:", err.response?.data?.message || err.message);
+    }
+  };
 
+  const handleCompletedTodo = async (index, id) => {
+    const now = new Date();
+    const completedOn = now.toLocaleDateString();
 
-  const handleDeleteTodo = (index) => {
-    let reducedTodo = [...allTodos]
-    reducedTodo.splice(index, 1);
-
-    localStorage.setItem('Todolist', JSON.stringify(reducedTodo))
-    setallTodos(reducedTodo)
-
-  }
-
-
-  const handleDeleteCompletedTodo = (index) => {
-    let reducedCompleteTodo = [...completedTodo]
-    reducedCompleteTodo.splice(index, 1)
-
-    localStorage.setItem('completedTodo', JSON.stringify(reducedCompleteTodo))
-    setcompeltedTodo(reducedCompleteTodo)
-  }
-
-
-
-
-
-
-
-  const handleCompletedTodo = (index) => {
-    let now = new Date();
-    let dd = now.getDay();
-    let mm = now.getMonth() + 1;
-    let yyyy = now.getFullYear();
-
-    let completedOn = dd + '-' + mm + '-' + yyyy
-
-
-    let filteredTodo = {
+    const completedTodoItem = {
       ...allTodos[index],
-      CompletedOn: completedOn
+      completedOn,
+    };
+    
+
+    try {
+      if (userId) {
+        await api.post(`/todos/complete/${userId}/${id}`, completedTodoItem);
+        setcompeltedTodo((prevCompleted) => [...prevCompleted, completedTodoItem]);
+        getCompletedTodo();
+        // handleDeleteTodo(index, id); 
+      }
+    } catch (err) {
+      console.error("Error marking todo as completed:", err.response?.data?.message || err.message);
+    }
+  };
+
+
+
+  const getCompletedTodo = async () =>{
+    try{
+      if(userId){
+        const response = await api.get(`/todos/completed/${userId}`);
+        setcompeltedTodo(response.data)
+      }
     }
 
-    let updatedCompleteTodoArr = [...completedTodo];
-    updatedCompleteTodoArr.push(filteredTodo)
-    setcompeltedTodo(updatedCompleteTodoArr)
-    handleDeleteTodo(index);
-    localStorage.setItem('completedTodo', JSON.stringify(updatedCompleteTodoArr))
+      catch (err) {
+        console.error("Error fetching completed todos:", err.response?.data?.message || err.message);
+      
+    }
   }
-
 
   const handleEdit = (index, item) => {
     setcurrentEdit(index);
-    setcurrentEditedItem(item)
+    setcurrentEditedItem(item);
+  };
 
-  }
-
-  const handleUpatedTitle = (value) => {
-    setcurrentEditedItem((prev)=>{
-      return {...prev , title: value}
-    })
-
-  }
-
-  const handleUpatedDescription = (value) => {
-    setcurrentEditedItem((prev)=>{
-      return {...prev , Description: value}
-    })
-  }
-
-
-  const handleUpdatedTodo= () =>{
-      let newTodo = [...allTodos]
-      newTodo[currentEdit]= currentEditedItem;
-      setallTodos(newTodo);
-      setcurrentEdit("");
-      localStorage.setItem('Todolist', JSON.stringify(newTodo))
-  }
-
-  useEffect(() => {
-    let savedTodo = JSON.parse(localStorage.getItem('Todolist'));
-    let savedCompletedtodo = JSON.parse(localStorage.getItem('completedTodo'))
-    if (savedTodo) {
-      setallTodos(savedTodo)
+  const handleUpdatedTodo = async () => {
+    try {
+      if (userId) {
+        await api.put(`/todos/${userId}/${currentEditedItem.id}`, currentEditedItem);
+        const updatedTodos = [...allTodos];
+        updatedTodos[currentEdit] = currentEditedItem;
+        setallTodos(updatedTodos);
+        setcurrentEdit("");
+      }
+    } catch (err) {
+      console.error("Error updating todo:", err.response?.data?.message || err.message);
     }
-
-    if (savedCompletedtodo) {
-      setcompeltedTodo(savedCompletedtodo)
-    }
-  }, [])
+  };
 
   return (
     <div className="App">
-      <Navbar/>
-      <h1>My toddos</h1>
+      <Navbar />
+      <h1>My Todos</h1>
 
       <div className='todo-wrapper'>
         <div className='todo-input'>
           <div className='todo-input-item'>
             <label>Title</label>
-            <input type="text" value={newTitle} onChange={(e) => setnewTitle(e.target.value)} placeholder='whats the task title?' />
+            <input type="text" value={newTitle} onChange={(e) => setnewTitle(e.target.value)} placeholder='Whats the task title?' />
           </div>
 
           <div className='todo-input-item'>
             <label>Description</label>
-            <input type="text" value={newDescription} onChange={(e) => setnewDescription(e.target.value)} placeholder='whats the task description?' />
+            <input type="text" value={newDescription} onChange={(e) => setnewDescription(e.target.value)} placeholder='Whats the task description?' />
           </div>
 
           <div className='todo-input-item'>
             <button type="button" onClick={handleAlltodos} className='primaryBtn'>Add</button>
           </div>
         </div>
-
 
         <div className='btn-area'>
           <button className={`secondaryBtn ${isCompleteScreen === false && 'active'}`} onClick={() => setisCompleteScreen(false)} >Todo</button>
@@ -158,62 +180,47 @@ function Todo() {
         <div className='todo-list'>
           {isCompleteScreen === false &&
             allTodos.map((item, index) => {
-
               if (currentEdit === index) {
                 return (
                   <div className='edit_wrapper' key={index}>
-                    <input placeholder='Updated Title' value={currentEditedItem.title} onChange={(e) => handleUpatedTitle(e.target.value)} />
-                    <textarea placeholder='Updated Description' value={currentEditedItem.Description} onChange={(e) => handleUpatedDescription(e.target.value)} />
-                    <button type="button" onClick={() => handleUpdatedTodo()} className='primaryBtn'>Update</button>
-
+                    <input placeholder='Updated Title' value={currentEditedItem.title} onChange={(e) => setcurrentEditedItem({ ...currentEditedItem, title: e.target.value })} />
+                    <textarea placeholder='Updated Description' value={currentEditedItem.description} onChange={(e) => setcurrentEditedItem({ ...currentEditedItem, description: e.target.value })} />
+                    <button type="button" onClick={handleUpdatedTodo} className='primaryBtn'>Update</button>
                   </div>
-                )
+                );
               }
               return (
                 <div className='todo-list-item' key={index}>
                   <div>
                     <h3>{item.title}</h3>
-                    <p>{item.Description}</p>
+                    <p>{item.description}</p>
                   </div>
-
                   <div className='all-btn'>
-                    <AiOutlineDelete className='delete-icon' onClick={() => handleDeleteTodo(index)} />
-                    <FaCheck className='check-icon' onClick={() => handleCompletedTodo(index)} />
-                    <AiOutlineEdit className='edit-icon' onClick={() => handleEdit(index,item)} />
+                    <AiOutlineDelete className='delete-icon' onClick={() => handleDeleteTodo(index, item.id)} />
+                    <FaCheck className='check-icon' onClick={() => handleCompletedTodo(index, allTodos[index].id)} />
+                    <AiOutlineEdit className='edit-icon' onClick={() => handleEdit(index, item)} />
                   </div>
                 </div>
-              )
-            })}
+              );
+            })
+          }
 
-          {isCompleteScreen === true && completedTodo.map((item, index) => {
-            return (
-              <div className='todo-list-item' key={index}>
-                <div >
-                  <h3>{item.title}</h3>
-                  <p>{item.Description}</p>
-                  <p>Completed On: {item.CompletedOn}</p>
-                </div>
-
-                <div>
-                  <AiOutlineDelete className='delete-icon' onClick={() => handleDeleteCompletedTodo(index)} />
-                </div>
+          {isCompleteScreen === true && completedTodo.map((item, index) => (
+            <div className='todo-list-item' key={index}>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <p>Completed On: {item.completedOn}</p>
               </div>
-            )
-          })}
+              <div>
+                <AiOutlineDelete className='delete-icon' onClick={() => handleDeleteTodo(index, item.id)} />
+              </div>
+            </div>
+          ))}
         </div>
-
-
-
       </div>
-
-
     </div>
   );
 }
 
 export default Todo;
-
-
-
-
-

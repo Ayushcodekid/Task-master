@@ -1,44 +1,64 @@
-const express = require('express')
-const app = express();
+// const express = require('express');
+// const cors = require('cors'); // Import cors
+// const sequelize = require('./db');
+// const authRoutes = require('./routes/authRoutes'); // Correct import for routes
+// require('dotenv').config();
+
+// const app = express();
+
+// app.use(cors());
+// app.use(express.json());
+
+// // Register the routes
+// app.use('/api', authRoutes); // Use '/api' as the base path
+
+// // Sync the database and start the server
+// sequelize.sync({ force: false })
+//     .then(() => {
+//         app.listen(process.env.PORT || 5000, () => {
+//             console.log(`Server is running on port ${process.env.PORT || 5000}`);
+//         });
+//     })
+//     .catch(err => console.error('Unable to connect to the database:', err));
+
+
+
+
+
+
+
+
+
+
+
+const express = require('express');
 const cors = require('cors');
-const mongoose= require('mongoose');
-const authRoutes=  require("./routes/authRoutes")
+const sequelize = require('./db');
+const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 5000;
+const app = express();
 
-const allowedOrigins = [
-    'http://localhost:3000',
-    'https://resilient-buttercream-79187e.netlify.app',
-    'https://codertodolist.netlify.app/',
-    'https://codertodoapp.netlify.app/'
-  ];
-
-  app.use(cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  }));
-
-
+app.use(cors());
 app.use(express.json());
 
-app.use("/api", authRoutes)
+// Register the routes
+app.use('/api', authRoutes); // Use '/api' as the base path
 
-mongoose.connect(process.env.DB_URL).then((result)=>{
-    console.log("DB connected successfully");
-})
-.catch(err=>{
-    console.log(err);
-})
+// Sync the database and start the server
+sequelize.sync({ alter: true }) // Set `alter: true` to automatically update tables if there are any changes in models
+    .then(() => {
+        app.listen(process.env.PORT || 5000, () => {
+            console.log(`Server is running on port ${process.env.PORT || 5000}`);
+        });
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+        process.exit(1); // Exit process with failure code
+    });
 
-
-app.listen(PORT,()=>{
-    console.log(`Server started at ${PORT} `)
-})
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
