@@ -6,21 +6,16 @@ async function createTodo(req, res) {
     try {
         const { title, description, userId } = req.body;
 
-        // Validate that required fields are provided
         if (!title || !description || !userId) {
             return res.status(400).json({ message: 'Title, description, and userId are required.' });
         }
 
-        // Create the new todo in the database
         const todo = await Todo.create({ title, description, userId });
 
-        // Respond with the created todo
         res.status(201).json({ message: 'Todo created successfully', todo });
     } catch (error) {
-        // Log the error for debugging purposes
         console.error('Error creating todo:', error);
 
-        // Respond with a generic error message
         res.status(500).json({ message: 'Error creating todo', error: error.message });
     }
 }
@@ -36,7 +31,7 @@ async function getTodos(req, res) {
             return res.status(400).send({ message: 'UserId is required.' });
         }
 
-        const todos = await Todo.findAll({ where: { userId }, comp });
+        const todos = await Todo.findAll({ where: { userId } });
         res.send(todos);
     } catch (error) {
         res.status(500).send({ message: 'Error retrieving todos', error });

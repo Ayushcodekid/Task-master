@@ -44,8 +44,8 @@ function Todo() {
     try {
       if (userId) {
         const response = await api.get(`/todos/${userId}`);
-        setallTodos(response.data);
-      }
+        const incompleteTodos = response.data.filter(todo => !todo.completedOn); // Filter incomplete todos
+        setallTodos(incompleteTodos);      }
     } catch (err) {
       console.error("Error fetching todos:", err.response?.data?.message || err.message);
     }
@@ -106,8 +106,10 @@ function Todo() {
     try {
       if (userId) {
         await api.post(`/todos/complete/${userId}/${id}`, completedTodoItem);
+        setallTodos((prevTodos) => prevTodos.filter((_, i) => i !== index));
+
         setcompeltedTodo((prevCompleted) => [...prevCompleted, completedTodoItem]);
-        getCompletedTodo();
+        // getCompletedTodo();
         // handleDeleteTodo(index, id); 
       }
     } catch (err) {
