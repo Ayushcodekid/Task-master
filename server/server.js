@@ -48,7 +48,7 @@ app.use('/api', authRoutes); // Use '/api' as the base path
 // Sync the database and start the server
 sequelize.sync({ alter: true }) // Set `alter: true` to automatically update tables if there are any changes in models
     .then(() => {
-        app.listen(process.env.PORT || 5000, () => {
+        app.listen(process.env.PORT || 7000, () => {
             console.log(`Server is running on port ${process.env.PORT || 5000}`);
         });
     })

@@ -22,22 +22,19 @@ function Todo() {
       try {
         if (userId) {
           const response = await api.get(`/todos/${userId}`);
-          setallTodos(response.data);
+          const incompleteTodos = response.data.filter(todo => !todo.completedOn);
+          const completedTodos = response.data.filter(todo => todo.completedOn);
+          
+          setallTodos(incompleteTodos);
+          setcompeltedTodo(completedTodos);
         }
       } catch (err) {
         console.error("Error fetching todos:", err.response?.data?.message || err.message);
       }
     };
+
     fetchTodos();
   }, [userId]);
-
-
-   // Call getTodos when component loads
-   useEffect(() => {
-    getTodos();
-    getCompletedTodo()
-  }, [userId]);
-
 
 
   const getTodos = async () => {
@@ -86,12 +83,18 @@ function Todo() {
     try {
       if (userId) {
         await api.delete(`/todos/${userId}/${id}`);
-        setallTodos((prevTodos) => prevTodos.filter((_, i) => i !== index));
+        if (isCompleteScreen) {
+          setcompeltedTodo((prevTodos) => prevTodos.filter((_, i) => i !== index));
+        } else {
+          setallTodos((prevTodos) => prevTodos.filter((_, i) => i !== index));
+        }
       }
     } catch (err) {
       console.error("Error deleting todo:", err.response?.data?.message || err.message);
     }
   };
+
+
 
   const handleCompletedTodo = async (index, id) => {
     const now = new Date();

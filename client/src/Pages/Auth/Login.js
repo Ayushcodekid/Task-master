@@ -52,7 +52,7 @@
 
 
 //   return (
-  
+
 //     <div className="login-container">
 //     <h2 className="login-title">Login</h2>
 //     <form className="login-form" onSubmit={handleSubmit}>
@@ -107,6 +107,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import api from "../../api";
 import './Login.css';
+import { FaUser, FaLock } from "react-icons/fa";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -158,12 +159,12 @@ const Login = () => {
       console.log('API Response:', response.data);
       // login(response.data.token);
 
-      const {token, userId} = response.data;
+      const { token, userId } = response.data;
 
-      localStorage.setItem('userId',userId)
-      localStorage.setItem('token',token)
+      localStorage.setItem('userId', userId)
+      localStorage.setItem('token', token)
 
-      
+
       navigate('/todo');
     } catch (err) {
       const status = err.response?.status;
@@ -184,39 +185,56 @@ const Login = () => {
   }
 
   return (
+  <div className="login-body">
     <div className="login-container">
-      <h2 className="login-title">Login</h2>
       <form className="login-form" onSubmit={handleSubmit}>
-       
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            onChange={handleChange}
-            value={formData.username}
-            className="login-input"
-          />
-          {errors.username && <p className="error-message">{errors.username}</p>}
-       
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            value={formData.password}
-            className="login-input"
-          />
-          {errors.password && <p className="error-message">{errors.password}</p>}
-     
+
+      <h1 className="login-title">Login</h1>
+
+  <div className="user-form">
+      <FaUser className="user-icon"/>
+
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          onChange={handleChange}
+          value={formData.username}
+          className="login-input"
+        />
+        {errors.username && <p className="error-message">{errors.username}</p>}
+        </div>
+
+
+        <div className="password-form">
+
+        <FaLock className="lock-icon"/>
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleChange}
+          value={formData.password}
+          className="login-input"
+        />
+        {errors.password && <p className="error-message">{errors.password}</p>}
+      </div>
+      <div className="login-btn-form">
         <button type="submit" className="login-button" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button><br></br>
+        </div>
         <Link to="/register">
-          <button type="button" className="register-button-1">Register</button>
-        </Link>
+          <div className="register-link">
+            <p>Dont have an account? Register</p>
 
-        {errors.apiError && <p className="error-message">{errors.apiError}</p>}
+          </div>        </Link>
+
       </form>
+      {errors.apiError && <p className="error-message">{errors.apiError}</p>}
+
+    </div>
     </div>
   );
 };
