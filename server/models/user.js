@@ -8,13 +8,15 @@ const User = sequelize.define('User', {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
-  firstName: {
+  email: {
     type: DataTypes.STRING,
-    allowNull: true, // Make sure this fits your requirements
-  },
-  lastName: {
-    type: DataTypes.STRING,
-    allowNull: true, // Make sure this fits your requirements
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: {
+        msg: "Must be a valid email address"
+      }
+    }
   },
   username: {
     type: DataTypes.STRING,
@@ -38,3 +40,11 @@ const User = sequelize.define('User', {
 });
 
 module.exports = User;
+
+
+
+
+
+
+
+

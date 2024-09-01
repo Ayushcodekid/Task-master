@@ -6,8 +6,8 @@ require('dotenv').config(); // To load environment variables
 // Create a new user
 async function registeredUser(req, res) {
     try {
-        const { firstName, lastName, username, password } = req.body;
-        const user = await User.create({ firstName, lastName, username, password });
+        const { email, username, password } = req.body;
+        const user = await User.create({ email, username, password });
         res.status(201).send({message:"User registered successfully", user});
     } catch (error) {
         res.status(500).send({ message: 'Error creating user', error });

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import api from "../../api";
-import { useNavigate, Link } from 'react-router-dom';
 import './Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    email: '',
     username: '',
     password: ''
   });
@@ -29,11 +28,10 @@ const Register = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
-    }
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email must be a valid email address';
     }
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required';
@@ -79,23 +77,15 @@ const Register = () => {
 
           <input
             type="text"
-            name="firstName"
-            placeholder="First Name"
+            name="email"
+            placeholder="Email"
             onChange={handleChange}
-            value={formData.firstName}
+            value={formData.email}
             className="register-input"
           />
-          {errors.firstName && <p className="error-message">{errors.firstName}</p>}
+          {errors.email && <p className="error-message">{errors.email}</p>}
 
-          <input
-            type="text"
-            name="lastName"
-            placeholder="Last Name"
-            onChange={handleChange}
-            value={formData.lastName}
-            className="register-input"
-          />
-          {errors.lastName && <p className="error-message">{errors.lastName}</p>}
+      
 
           <input
             type="text"

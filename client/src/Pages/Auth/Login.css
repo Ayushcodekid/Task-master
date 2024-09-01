@@ -48,7 +48,7 @@
 .login-form input {
   display: flex;
   width: 90%;
-  height: 5vh;
+  height: 8vh;
   border-radius: 30px;
   text-align: center;
   background-color: transparent;
@@ -77,8 +77,8 @@
 }
 
 .login-button {
-  width: 96%;
-  height: 5vh;
+  width: 38%;
+  height: 8vh;
   border-radius: 23px;
   font-size: 1.3rem;
   border: 2px solid white;
@@ -101,7 +101,9 @@
 
 .login-btn-form {
   display: flex;
-  width: 90%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-icon {

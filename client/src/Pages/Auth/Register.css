@@ -42,7 +42,7 @@
 .register-form input{
   display: flex;
   width: 85%;
-  height: 5vh;
+  height: 8vh;
   border-radius: 30px;
   text-align: left;
   background-color: transparent;
@@ -81,7 +81,7 @@
 /* Register Button */
 .register-button {
   width: 10rem;
-  height: 5vh;
+  height: 8vh;
   border-radius: 23px;
   font-size: 1.3rem;
   border: 2px solid white;
@@ -98,7 +98,7 @@
 /* Login Button */
 .login-button-1 {
   width: 8rem;
-  height: 5vh;
+  height: 8vh;
   border-radius: 23px;
   font-size: 1.3rem;
   border: 2px solid white;

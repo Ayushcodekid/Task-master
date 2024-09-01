@@ -104,4 +104,27 @@ async function completeTodo(req, res) {
     }
 
 
-    module.exports = { createTodo, getTodos, deleteTodo, completeTodo, getCompletedTodos };
+    // Function to update a todo
+async function updateTodo(req, res) {
+    const { userId, id } = req.params;
+    const { title, description } = req.body;
+
+    try {
+        const todo = await Todo.findOne({ where: { id, userId } });
+        if (!todo) {
+            return res.status(404).json({ message: 'Todo not found' });
+        }
+
+        todo.title = title;
+        todo.description = description;
+        await todo.save();
+
+        res.json({ message: 'Todo updated successfully', todo });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating todo', error: error.message });
+    }
+}
+
+
+
+    module.exports = { createTodo, getTodos, deleteTodo, completeTodo, getCompletedTodos, updateTodo };
