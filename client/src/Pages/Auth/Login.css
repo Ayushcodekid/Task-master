@@ -16,7 +16,7 @@
   width: 100%;
   height: 100vh;
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
 
 }
@@ -24,7 +24,7 @@
 .login-container {
   display: flex;
   flex-direction: column;
-  margin-left: 5%;
+  /* margin-left: 5%; */
 }
 
 
@@ -39,7 +39,7 @@
   align-items: center;
   border-radius: 10px;
   height: fit-content;
-  gap: 4vh;
+  gap: 2vh;
 }
 
 
@@ -47,8 +47,8 @@
 
 .login-form input {
   display: flex;
-  width: 90%;
-  height: 8vh;
+  width: 85%;
+  height: 6vh;
   border-radius: 30px;
   text-align: center;
   background-color: transparent;
@@ -76,9 +76,10 @@
   font-size: 1.2rem;
 }
 
+
 .login-button {
   width: 38%;
-  height: 8vh;
+  height: 5vh;
   border-radius: 23px;
   font-size: 1.3rem;
   border: 2px solid white;
@@ -86,6 +87,14 @@
 
 
 }
+
+.login-button:hover{
+  transform: scale(1.02);
+  color: #fff;
+  background: linear-gradient(250deg, rgb(97, 35, 243), rgb(34, 139, 238));
+  border: none;
+}
+
 
 .user-form {
   display: flex;
@@ -106,21 +115,197 @@
   justify-content: center;
 }
 
-.user-icon {
-  position: absolute;
-  margin-left: 4%;
-  margin-top: 4%;
-  color: white;
-}
-
-.lock-icon {
-  position: absolute;
-  margin-left: 4%;
-  margin-top: 4%;
-  color: white;
-
-}
 
 button {
   text-align: center;
+}
+
+
+.input-container-login {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 20px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px 10px 10px 40px; /* Adjust left padding to make space for the icon */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.login-input::placeholder {
+  color: #aaa;
+}
+
+
+
+
+
+@media only screen and (max-width: 780px) {
+  
+.error-message {
+  color: rgb(194, 6, 6);
+  text-align: center;
+}
+
+.login-body{
+  background: url('./background.jpg') no-repeat;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0%;
+  align-items: center;
+  width: 100%;
+}
+
+
+
+.login-form {
+  width: 92%;
+  background: transparent;
+  border: 1px solid gray;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  height: fit-content;
+  gap: 2vh;
+
+}
+
+
+  
+
+.login-form input {
+  display: flex;
+  width: 85%;
+  height: 6vh;
+  border-radius: 30px;
+  text-align: center;
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  outline: none;
+  padding: 0 10px;
+}
+
+.login-form input::placeholder {
+  color: white;
+  opacity: 0.8;
+}
+
+.login-input:focus {
+  border-color: rgba(111, 0, 255, 0.5);
+  box-shadow: 0 0 5px rgba(111, 0, 255, 0.5);
+  /* Add shadow on focus */
+  outline: none;
+}
+
+
+.register-link{
+  color: white;
+  font-size: 1.2rem;
+}
+
+
+.login-button {
+  width: 38%;
+  height: 5vh;
+  border-radius: 23px;
+  font-size: 1.3rem;
+  border: 2px solid white;
+  cursor: pointer;
+
+
+}
+
+.login-button:hover{
+  transform: scale(1.02);
+  color: #fff;
+  background: linear-gradient(250deg, rgb(97, 35, 243), rgb(34, 139, 238));
+  border: none;
+}
+
+
+.user-form {
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+}
+
+.password-form {
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+}
+
+.login-btn-form {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+
+button {
+  text-align: center;
+}
+
+
+.input-container-login {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 20px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px 10px 10px 40px; /* Adjust left padding to make space for the icon */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.login-input::placeholder {
+  color: #aaa;
+}
+
 }

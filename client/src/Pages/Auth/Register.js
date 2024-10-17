@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import api from "../../api";
 import './Register.css';
+import { MdAlternateEmail } from "react-icons/md";
+import { FaUser, FaLock } from "react-icons/fa";
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -75,45 +78,51 @@ const Register = () => {
         <form className="register-form" onSubmit={handleSubmit}>
           <h2 className="register-title">Register</h2>
 
-          <input
-            type="text"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            value={formData.email}
-            className="register-input"
-          />
+          <div className="input-container">
+            <MdAlternateEmail className="icon" />
+            <input
+              type="text"
+              name="email"
+              placeholder="Email"
+              onChange={handleChange}
+              value={formData.email}
+              className="register-input"
+            />
+          </div>
           {errors.email && <p className="error-message">{errors.email}</p>}
 
-      
-
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            onChange={handleChange}
-            value={formData.username}
-            className="register-input"
-          />
+          <div className="input-container">
+            <FaUser className="icon" />
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              onChange={handleChange}
+              value={formData.username}
+              className="register-input"
+            />
+          </div>
           {errors.username && <p className="error-message">{errors.username}</p>}
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            value={formData.password}
-            className="register-input"
-          />
+          <div className="input-container">
+            <FaLock className="icon" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              value={formData.password}
+              className="register-input"
+            />
+          </div>
           {errors.password && <p className="error-message">{errors.password}</p>}
-
 
           <div className="submit-reg">
 
             <button type="submit" className="register-button">Register</button>
             <br />
 
-            <Link to="/"><button type="button" className="login-button-1">Login</button></Link>
+            <Link to="/"><p className="login-text">Already have an account. Click Here</p></Link>
             {errors.apiError && <p className="error-message">{errors.apiError}</p>}
 
           </div>

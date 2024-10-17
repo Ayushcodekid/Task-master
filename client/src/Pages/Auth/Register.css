@@ -1,17 +1,17 @@
-
-.register-body{
+.register-body {
   background: url('./background.jpg') no-repeat;
   width: 100%;
   height: 100vh;
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
 }
 
 .register-container {
   display: flex;
   flex-direction: column;
-  margin-left: 5%;
+  /* margin-left: 5%; */
+  justify-content: center;
 }
 
 /* Register Title */
@@ -39,10 +39,10 @@
   gap: 1vh;
 }
 
-.register-form input{
+.register-form input {
   display: flex;
   width: 85%;
-  height: 8vh;
+  height: 6vh;
   border-radius: 30px;
   text-align: left;
   background-color: transparent;
@@ -50,6 +50,7 @@
   color: white;
   outline: none;
   padding: 0 10px;
+  text-align: center;
 }
 
 .register-form input::placeholder {
@@ -61,14 +62,12 @@
 /* Register Input */
 .register-input {
   width: 100%;
-  /* Adjust to fit the form */
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
+  padding: 10px 10px 10px 40px;
+  /* Adjust left padding to make space for the icon */
+  font-size: 16px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 1rem;
-  /* Optional: Add a transition effect */
-  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
 }
 
 .register-input:focus {
@@ -81,63 +80,87 @@
 /* Register Button */
 .register-button {
   width: 10rem;
-  height: 8vh;
+  height: 5vh;
   border-radius: 23px;
   font-size: 1.3rem;
   border: 2px solid white;
   cursor: pointer;
 }
 
-.register-button:hover{
+.register-button:hover {
   transform: scale(1.02);
   color: #fff;
   background: linear-gradient(250deg, rgb(97, 35, 243), rgb(34, 139, 238));
   border: none;
 }
 
-/* Login Button */
-.login-button-1 {
-  width: 8rem;
-  height: 8vh;
-  border-radius: 23px;
-  font-size: 1.3rem;
-  border: 2px solid white;
-  cursor: pointer;
-  margin-bottom: 10%;
-  margin-left: 2%;
+.login-text {
+  color: white;
+  font-size: 1.1rem;
 }
 
-.login-button-1:hover{
-  transform: scale(1.02);
-  color: #fff;
-  background: linear-gradient(250deg, rgb(97, 35, 243), rgb(34, 139, 238));
-  border: none;
-}
-
-.submit-reg{
+.submit-reg {
   display: flex;
-  justify-content: space-between;
-  gap: 5%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+}
+
+.icon {
+  position: absolute;
+  left: 33px;
+  top: 46%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 20px;
+
+}
+
+
+
+.register-input::placeholder {
+  color: #aaa;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 
 @media only screen and (max-width: 780px) {
+  .register-body {
+    background: url('./background.jpg') no-repeat;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+  }
+
   .register-container {
     display: flex;
     flex-direction: column;
+    margin-left: 0%;
     align-items: center;
-    justify-content: center;
     width: 100%;
-    background-color: #4e4d4d;
-    /* Optional: Add a gradient background */
-    background: linear-gradient(to bottom, #6adceb, #333);
   }
 
   /* Register Title */
   .register-title {
     font-size: 2rem;
     color: white;
-    margin-top: -20%;
+    margin-bottom: 20px;
     text-align: center;
     font-weight: bold;
     /* Optional: Add text shadow for better visibility */
@@ -146,30 +169,47 @@
 
   /* Register Form */
   .register-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 75%;
-    max-width: 400px;
+    width: 92%;
+    background: transparent;
+    border: 1px solid gray;
+    backdrop-filter: blur(20px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Optional: Add a subtle border */
-    border: 1px solid #ddd;
+    border-radius: 10px;
+    height: fit-content;
+    gap: 1vh;
   }
+
+  .register-form input {
+    display: flex;
+    width: 85%;
+    height: 6vh;
+    border-radius: 30px;
+    text-align: left;
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    outline: none;
+    padding: 0 10px;
+    text-align: center;
+  }
+
+  .register-form input::placeholder {
+    color: white;
+    opacity: 0.8;
+  }
+
 
   /* Register Input */
   .register-input {
     width: 100%;
-    /* Adjust to fit the form */
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
+    padding: 10px 10px 10px 40px;
+    /* Adjust left padding to make space for the icon */
+    font-size: 16px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1rem;
-    /* Optional: Add a transition effect */
-    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
   }
 
   .register-input:focus {
@@ -181,41 +221,61 @@
 
   /* Register Button */
   .register-button {
-    width: 30%;
-    /* Adjust to fit the form */
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 1rem;
+    width: 10rem;
+    height: 5vh;
+    border-radius: 23px;
+    font-size: 1.3rem;
+    border: 2px solid white;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
   }
 
   .register-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-    /* Slightly enlarge button on hover */
-  }
-
-  /* Login Button */
-  .login-button-1 {
-    width: 100%;
-    /* Adjust to fit the form */
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
+    transform: scale(1.02);
     color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    background: linear-gradient(250deg, rgb(97, 35, 243), rgb(34, 139, 238));
+    border: none;
   }
 
-  .login-button-1:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-    /* Slightly enlarge button on hover */
+  .login-text {
+    color: white;
+    font-size: 1.1rem;
+  }
+
+  .submit-reg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .input-container {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+  }
+
+  .icon {
+    position: absolute;
+    left: 33px;
+    top: 46%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 20px;
+
+  }
+
+
+
+  .register-input::placeholder {
+    color: #aaa;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
   }
 }
