@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import './Todo.css';
 
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
@@ -6,6 +6,8 @@ import { FaCheck } from "react-icons/fa";
 import { RiLoaderFill } from "react-icons/ri";
 import api from '../../api';
 import Navbar from "../Navbar/Navbar";
+import { UserContext } from '../Context/UserContext';
+
 
 function Todo() {
   const [isCompleteScreen, setisCompleteScreen] = useState(false);
@@ -17,7 +19,9 @@ function Todo() {
   const [currentEditedItem, setcurrentEditedItem] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const userId = localStorage.getItem('userId');
+  const {user} = useContext(UserContext); 
+
+  const userId = user?.userId;
 
   useEffect(() => {
     const fetchTodos = async () => {
