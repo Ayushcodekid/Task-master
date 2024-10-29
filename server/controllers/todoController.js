@@ -4,21 +4,28 @@ const { Op } = require('sequelize');
 // Function to create a new Todo
 async function createTodo(req, res) {
     try {
-        const { title, description, userId } = req.body;
+        const { title, description, userId, isImportant, completedOn } = req.body;
 
         if (!title || !description || !userId) {
             return res.status(400).json({ message: 'Title, description, and userId are required.' });
         }
 
-        const todo = await Todo.create({ title, description, userId });
+        
+        const todo = await Todo.create({ 
+            title, 
+            description, 
+            userId, 
+            completedOn: completedOn || null, 
+            isImportant 
+        });
 
         res.status(201).json({ message: 'Todo created successfully', todo });
     } catch (error) {
         console.error('Error creating todo:', error);
-
         res.status(500).json({ message: 'Error creating todo', error: error.message });
     }
 }
+
 
 
 // Function to get all Todos for a specific user
@@ -126,5 +133,31 @@ async function updateTodo(req, res) {
 }
 
 
+const toggleTaskStatus = async (req, res) => {
+    try {
+      const { taskId } = req.params;
+      const task = await Todo.findByPk(taskId);
+  
+      if (!task) {
+        return res.status(404).json({ message: 'Task not found' });
+      }
+  
+      // Toggle the completedOn status
+      if (task.completedOn) {
+        // Mark as incomplete
+        task.completedOn = null;
+      } else {
+        // Mark as complete, and convert the date to a string
+        task.completedOn = new Date().toISOString();
+      }
+  
+      await task.save();
+      res.json(task);
+    } catch (error) {
+      console.error('Error toggling task status:', error);
+      res.status(500).json({ message: 'Internal server error', error });
+    }
+  };
+  
 
-    module.exports = { createTodo, getTodos, deleteTodo, completeTodo, getCompletedTodos, updateTodo };
+    module.exports = { createTodo, getTodos, deleteTodo, completeTodo, getCompletedTodos, updateTodo, toggleTaskStatus };

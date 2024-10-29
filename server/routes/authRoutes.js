@@ -14,5 +14,6 @@ router.delete('/todos/:userId/:id', TodoController.deleteTodo);
 router.post(`/todos/complete/:userId/:id`, TodoController.completeTodo)
 router.get('/todos/completed/:userId', TodoController.getCompletedTodos);
 router.put('/todos/:userId/:id', TodoController.updateTodo);
+router.patch('/:taskId/toggle-status', TodoController.toggleTaskStatus);
 
 module.exports= router;
