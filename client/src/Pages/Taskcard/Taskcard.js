@@ -102,21 +102,34 @@ function TaskCard({ task }) {
 
   return (
     <div className={`task-card ${isCompleted ? 'completed' : 'incomplete'}`}>
-      <h3>{task.title}</h3>
-      <p>{task.description}</p>
       <div className="task-footer">
-        <span className="task-date">{formatDate(task.completedOn)}</span>
-        <div className="task-actions">
-          <button
-            className={`status-toggle-btn ${isCompleted ? 'completed-btn' : 'incomplete-btn'}`}
-            onClick={handleStatusToggle}
-          >
-            {isCompleted ? 'Completed' : 'Incomplete'}
-          </button>
+
+        <div className='title-des'>
+
+          <h2>{task.title}</h2>
+          <p>{task.description}</p>
+        </div>
+
+        <div className='date'>
+          <span className="task-date">{formatDate(task.completedOn)}</span>
+        </div>
+      </div>
+
+
+      <div className="task-actions">
+        <button
+          className={`status-toggle-btn ${isCompleted ? 'completed-btn' : 'incomplete-btn'}`}
+          onClick={handleStatusToggle}
+        >
+          {isCompleted ? 'Completed' : 'Incomplete'}
+        </button>
+
+        <div className='card-buttons'>
           <button className="edit-btn">🖉</button>
           <button className="delete-btn" onClick={handleDelete}>🗑</button>
         </div>
       </div>
+
     </div>
   );
 }

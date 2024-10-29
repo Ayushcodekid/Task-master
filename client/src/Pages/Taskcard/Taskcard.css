@@ -3,17 +3,18 @@
   padding: 1%;
   border-radius: 10px;
   color: white;
-  width: 300px;
-  /* margin: 10px; */
+  width: 30%;
   position: relative;
   display: flex;
   flex-direction: column;
+  height: 30vh;
+  justify-content: space-between;
 }
 
 
-.task-card h3 {
+.task-card h2 {
   margin: 0; /* Remove top and bottom margin from the title */
-  font-size: 1.2em;
+  font-size: 1.5em;
 }
 
 .task-card p {
@@ -22,19 +23,28 @@
 }
 
 .task-date {
-  font-size: 0.9em;
+  font-size: 1rem;
   color: #ccc; /* Lighten the color to make it distinct */
-  margin-top: 5px; /* Adds slight separation from the description */
+  font-weight: 700;
+  margin-left: 2%;
 }
 
 
 .task-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+  flex-direction: column;
+  gap: 10vh;
 }
 
+.title-des{
+display: flex;
+flex-direction: column;
+}
+
+
+.card-buttons{
+  display: flex;
+}
 
 .completed {
   border-left: 5px solid #00e676;
@@ -44,14 +54,11 @@
   border-left: 5px solid #ff5252;
 }
 
-.task-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
 
 .task-actions {
   display: flex;
+    justify-content: space-between;
 }
 
 .edit-btn,
@@ -68,9 +75,13 @@
 .status-toggle-btn {
   border: none;
   color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 40%;
+    height: 6vh;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .completed-btn {
@@ -82,6 +93,4 @@
 }
 
 
-.status-toggle-btn:hover {
-  background-color: #0056b3;
-}
+
