@@ -42,11 +42,15 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './Sidebar.css';
+import { UserContext } from '../Context/UserContext';
+import { MdDarkMode } from "react-icons/md";
+
 
 function Sidebar({ setFilter }) {
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const { isDarkMode, toggleTheme } = useContext(UserContext);
 
   const handleFilterClick = (filter) => {
     setFilter(filter);
@@ -54,14 +58,14 @@ function Sidebar({ setFilter }) {
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isDarkMode ? 'dark' : ''}`}>
       <div className="profile">
         <img
           src="https://via.placeholder.com/100"
           alt="Profile"
           className="profile-img"
         />
-        <h3>Maclinz Maclinz</h3>
+        <h3 className='profile-name'>Maclinz Maclinz</h3>
       </div>
       <nav className="nav">
         <ul>
@@ -83,9 +87,14 @@ function Sidebar({ setFilter }) {
           >
             <i className="icon-completed"></i> Completed!
           </li>
-         
+
         </ul>
       </nav>
+
+      <div onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
+        <MdDarkMode style={{color: 'black'}}/>
+      </div>
+
       <button className="sign-out">Sign Out</button>
     </div>
   );

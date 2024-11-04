@@ -7,6 +7,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden; /* Prevent overflow */
+  overflow-y:scroll; /* Add vertical scrollbar if content overflows */
+  scrollbar-width: none;
+  word-wrap: break-word; /* Allows long words to break and wrap to the next line */
   height: 25vh;
   justify-content: space-between;
   /* border: 1px solid #fae2e2; */
@@ -16,6 +20,8 @@
 .task-card h2 {
   margin: 0; /* Remove top and bottom margin from the title */
   font-size: 1.5em;
+  line-height: 1.3; /* Adjust line height for readability */
+
 }
 
 .task-card p {
@@ -70,7 +76,12 @@ flex-direction: column;
   cursor: pointer;
   margin-left: 10px;
   font-size: 1.5rem;
-  color: red;
+  /* color: red; */
+}
+
+
+.delete-btn:hover {
+  color: #fa2f2f;
 }
 
 .edit-btn{
@@ -81,6 +92,10 @@ flex-direction: column;
   margin-left: 10px;
   font-size: 1.5rem;
   
+}
+
+.edit-btn:hover {
+  color: blueviolet;
 }
 
 
