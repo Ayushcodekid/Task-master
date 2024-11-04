@@ -28,45 +28,6 @@
 }
 
 
-.task-cards {
-  background-color: #2e2e3f;
-  padding: 20px;
-  border-radius: 10px;
-  color: white;
-  width: 300px;
-  margin: 10px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.task-card.completed {
-  border-left: 5px solid #00e676;
-}
-
-.task-card.incomplete {
-  border-left: 5px solid #ff5252;
-}
-
-.task-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.task-actions {
-  display: flex;
-}
-
-.edit-btn,
-.delete-btn {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
 
 
 .add-task-card{
@@ -75,12 +36,12 @@
     color: rgb(255, 255, 255);
     text-align: center;
     border: dotted;
-    margin-top: 1%;
-    width: 22%;
+    width: 30%;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 20vh;
+    height: 32vh;
+    opacity: 20%;
 }
 
 
