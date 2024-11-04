@@ -40,7 +40,7 @@
 .task-footer {
   display: flex;
   flex-direction: column;
-  gap: 10vh;
+  /* gap: 10vh; */
 }
 
 .title-des{
@@ -106,7 +106,7 @@ flex-direction: column;
   padding: 5px 10px;
   border-radius: 25px;
   cursor: pointer;
-  width: 41%;
+  width: 44%;
   height: 5vh;
   font-size: 1rem;
   font-weight: 600;

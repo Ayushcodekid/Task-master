@@ -59,11 +59,11 @@
 
 
 import React, { useContext, useState } from 'react';
+import { AiFillDelete } from "react-icons/ai";
+import { MdEditDocument } from "react-icons/md";
 import api from '../../api';
 import { UserContext } from '../Context/UserContext'; // Fetch userId from context
 import './Taskcard.css';
-import { MdEditDocument } from "react-icons/md";
-import { AiFillDelete } from "react-icons/ai";
 
 
 
@@ -113,11 +113,12 @@ function TaskCard({ task }) {
           <h2>{task.title}</h2>
           <p>{task.description}</p>
         </div>
+        </div><br></br>
 
         <div className='date'>
           <span className="task-date">{formatDate(task.completedOn)}</span>
         </div>
-      </div>
+      
 
 
       <div className="task-actions">

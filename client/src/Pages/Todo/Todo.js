@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
   Button,
-  FormControlLabel,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  TextField,
 } from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react';
 import api from '../../api';
+import { UserContext } from '../Context/UserContext';
 import Sidebar from '../Sidebar/Sidebar';
 import TaskCard from '../Taskcard/Taskcard';
-import { UserContext } from '../Context/UserContext'; 
 import './Todo.css';
 
 function TodoList() {
@@ -119,15 +119,14 @@ function TodoList() {
             backgroundColor: '#1e1e22',
             width: '28%',
             borderRadius: '15px',
-            scrollbarWidth: 'none'
-          },
+        },
         }}
       >
         <DialogTitle style={{ backgroundColor: '#1e1e22', color: '#fff', fontWeight: 'bold', fontSize: '24px', textAlign: 'center' }}>
           Create a Task
         </DialogTitle>
 
-        <DialogContent style={{ backgroundColor: '#1e1e22' }}>
+        <DialogContent style={{ backgroundColor: '#1e1e22', scrollbarWidth: 'none' , background: 'transparent' , marginTop: '-5%' }}>
           <h2 style={{ color: 'white' }}>Title</h2>
           <TextField
             label="Title"
