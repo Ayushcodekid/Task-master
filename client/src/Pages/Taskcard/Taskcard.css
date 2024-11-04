@@ -1,14 +1,15 @@
 .task-card {
-  background-color: #2e2e3f;
+  background-color: #313133;
   padding: 1%;
   border-radius: 10px;
   color: white;
-  width: 30%;
+  width: 25%;
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 30vh;
+  height: 25vh;
   justify-content: space-between;
+  /* border: 1px solid #fae2e2; */
 }
 
 
@@ -47,7 +48,7 @@ flex-direction: column;
 }
 
 .completed {
-  border-left: 5px solid #00e676;
+  border-left: 5px solid #06f306;
 }
 
 .incomplete {
@@ -61,13 +62,25 @@ flex-direction: column;
     justify-content: space-between;
 }
 
-.edit-btn,
+
 .delete-btn {
   background: none;
   border: none;
   color: white;
   cursor: pointer;
   margin-left: 10px;
+  font-size: 1.5rem;
+  color: red;
+}
+
+.edit-btn{
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 1.5rem;
+  
 }
 
 
@@ -75,17 +88,17 @@ flex-direction: column;
 .status-toggle-btn {
   border: none;
   color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    cursor: pointer;
-    width: 40%;
-    height: 6vh;
-    font-size: 1rem;
-    font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 41%;
+  height: 5vh;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .completed-btn {
-  background-color: #00e676; /* Green for Completed */
+  background-color: #05c405; /* Green for Completed */
 }
 
 .incomplete-btn {

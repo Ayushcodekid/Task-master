@@ -1,6 +1,6 @@
-.sidebar {
+/* .sidebar {
     width: 250px;
-    background-color: #1e1e2f;
+    background-color: #1e1e22;
     color: white;
     padding: 20px;
     display: flex;
@@ -42,4 +42,143 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+   */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   /* Sidebar container */
+.sidebar {
+  width: 17%;
+  background-color: #1e1e22;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 18px;
+  border: 3px solid gray;
+}
+
+
+
+/* Profile section */
+.profile {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+
+.nav {
+  position: relative; /* Make the nav position relative for positioning child elements */
+  width: 100%;
+}
+
+.nav ul {
+  list-style: none;
+    padding: 0;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh
+}
+
+.nav li.active {
+  color: #fff;
+  font-weight: bold;
+  background-color: #333;
+  position: relative;
+}
+
+.nav li.active::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  background-color: #06f306; /* Green highlight for active tab */
+  left: 0;
+  top: 0;
+  border-radius: 3px;
+}
+
+.nav li {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #bbb;
+  position: relative; /* Required for the pseudo-element */
+  overflow: hidden; /* Prevent overflow of the pseudo-element */
+}
+
+/* Use a pseudo-element for the background fill */
+.nav li::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(85, 88, 85, 0.3); /* Light green fill color */
+  left: -100%; /* Start from the left side */
+  top: 0;
+  transition: left 0.3s ease; /* Smooth transition */
+  z-index: 0; /* Behind the text */
+}
+
+.nav li i {
+  margin-right: 10px;
+}
+
+/* Highlight active menu item */
+.nav li.active {
+  color: #fff;
+  font-weight: bold;
+}
+
+.nav li:hover {
+  color: #fff; /* Change text color on hover */
+}
+
+/* Move the pseudo-element to fill the background on hover */
+.nav li:hover::before {
+  left: 0; /* Move it to the left */
+}
+
+
+/* Sign-out button */
+.sign-out {
+  margin-top: auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #ff5252;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.sign-out:hover {
+  color: #ff7979;
+}

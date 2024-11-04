@@ -129,8 +129,12 @@ function TaskCard({ task }) {
         </button>
 
         <div className='card-buttons'>
-          <button className="edit-btn">🖉</button>
-          <button className="delete-btn" onClick={handleDelete}>🗑</button>
+          <button className="edit-btn">
+            <MdEditDocument />
+          </button>
+          <button className="delete-btn" onClick={handleDelete}>
+            <AiFillDelete />
+          </button>
         </div>
       </div>
 

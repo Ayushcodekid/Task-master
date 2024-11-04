@@ -91,7 +91,7 @@ function TodoList() {
   });
 
   return (
-    <div className="app">
+    <div className={`app ${isModalOpen ? 'blur' : ''}`}>
       <Sidebar setFilter={setFilter} />
       <div className="tasks-container">
         <h2>{filter.charAt(0).toUpperCase() + filter.slice(1)} Tasks</h2>
@@ -116,17 +116,18 @@ function TodoList() {
         onClose={() => setModalOpen(false)}
         PaperProps={{
           style: {
-            backgroundColor: '#2e2e3f',
+            backgroundColor: '#1e1e22',
             width: '28%',
             borderRadius: '15px',
+            scrollbarWidth: 'none'
           },
         }}
       >
-        <DialogTitle style={{ backgroundColor: '#2e2e3f', color: '#fff', fontWeight: 'bold', fontSize: '24px' }}>
+        <DialogTitle style={{ backgroundColor: '#1e1e22', color: '#fff', fontWeight: 'bold', fontSize: '24px', textAlign: 'center' }}>
           Create a Task
         </DialogTitle>
 
-        <DialogContent style={{ backgroundColor: '#2e2e3f' }}>
+        <DialogContent style={{ backgroundColor: '#1e1e22' }}>
           <h2 style={{ color: 'white' }}>Title</h2>
           <TextField
             label="Title"
@@ -202,7 +203,7 @@ function TodoList() {
             </div>
           </div>
         </DialogContent>
-        <DialogActions style={{ backgroundColor: '#2e2e3f' }}>
+        <DialogActions style={{ backgroundColor: '#1e1e22' }}>
           <Button onClick={() => setModalOpen(false)} style={{ color: '#fff', backgroundColor: '#ff5252' }}>
             Close
           </Button>
