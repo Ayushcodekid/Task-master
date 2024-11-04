@@ -62,6 +62,10 @@ import React, { useContext, useState } from 'react';
 import api from '../../api';
 import { UserContext } from '../Context/UserContext'; // Fetch userId from context
 import './Taskcard.css';
+import { MdEditDocument } from "react-icons/md";
+import { AiFillDelete } from "react-icons/ai";
+
+
 
 function TaskCard({ task }) {
   const { user } = useContext(UserContext);
@@ -113,8 +117,12 @@ function TaskCard({ task }) {
           >
             {isCompleted ? 'Completed' : 'Incomplete'}
           </button>
-          <button className="edit-btn">🖉</button>
-          <button className="delete-btn" onClick={handleDelete}>🗑</button>
+          <button className="edit-btn">
+            <MdEditDocument />
+          </button>
+          <button className="delete-btn" onClick={handleDelete}>
+            <AiFillDelete />
+          </button>
         </div>
       </div>
     </div>
