@@ -2,7 +2,7 @@
   display: flex;
   gap: 3vw;
   padding: 2%;
-  background-color: #121212;
+  background-color: #1e1e22;
   height: 100vh;
 
 }
@@ -10,7 +10,7 @@
 .tasks-container {
   padding: 20px;
   width: 100%;
-  background-color: #1e1e22;
+  background-color: #1f1e1e;
   color: white;
   display: flex;
   flex-direction: column;
@@ -131,17 +131,58 @@
 
 
 
+.tasks-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -2%;
+}
+
+
+.theme-toggle {
+  cursor: pointer;
+  transition: color 0.3s; 
+  font-size: 2rem;
+}
+
+ .theme-toggle:hover {
+  color: #ff5252;
+} 
 
 
 
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  backdrop-filter: blur(8px);  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1300; 
+}
 
-
+.spinner {
+  font-size: 2rem;
+  color: white;
+}
 
 
 /* Dark mode styles */
+
+
+.app.dark {
+  background-color: rgb(216, 213, 213);
+}
+
 .app.dark .tasks-container {
   background-color: whitesmoke; 
   color: black; 
+  border: 3px solid black;
+
 }
 
 

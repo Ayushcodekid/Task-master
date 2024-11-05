@@ -11,6 +11,9 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import api from '../../api';
 import { UserContext } from '../Context/UserContext';
+import { MdDarkMode, MdLightMode } from 'react-icons/md'; // Import both icons
+import { RiLoaderFill } from "react-icons/ri";
+
 import Sidebar from '../Sidebar/Sidebar';
 import TaskCard from '../Taskcard/Taskcard';
 import './Todo.css';
@@ -19,6 +22,7 @@ function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(false);
   const { user } = useContext(UserContext);
   const { isDarkMode, toggleTheme } = useContext(UserContext);
 
@@ -36,8 +40,11 @@ function TodoList() {
   useEffect(() => {
     async function fetchTasks() {
       try {
+        setLoading(true);
         const response = await api.get(`/todos/${userId}`);
         setTasks(response.data);
+        setLoading(false);
+
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
@@ -68,9 +75,13 @@ function TodoList() {
     setSubmitting(true); // Set submitting to true
 
     try {
+      setLoading(true);
+
       const response = await api.post('/todos', newTask);
       console.log('Task created successfully:', response.data.todo); // Log success response
       setTasks([...tasks, response.data.todo]); // Update the tasks list
+      
+
       // Reset form fields
       setTitle('');
       setDescription('');
@@ -78,6 +89,7 @@ function TodoList() {
       setCompleted(false);
       setImportant(false);
       setModalOpen(false); // Close modal
+      setLoading(false);
     } catch (error) {
       console.error('Error creating task:', error.response?.data || error.message);
     } finally {
@@ -96,13 +108,25 @@ function TodoList() {
     <div className={`app ${isDarkMode ? 'dark' : ''} ${isModalOpen ? 'blur' : ''}`}>
       <Sidebar setFilter={setFilter} />
       <div className="tasks-container">
-        <h2 className='tasks-text'>{filter.charAt(0).toUpperCase() + filter.slice(1)} Tasks</h2>
+        <div className="tasks-header">
+          <h2 className='tasks-text'>{filter.charAt(0).toUpperCase() + filter.slice(1)} Tasks</h2>
+          <div onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
+            {isDarkMode ? <MdLightMode className='light-mode-icon' style={{ color: 'black' }} /> : <MdDarkMode className='dark-mode-icon' style={{ color: 'white' }} />}
+          </div>
+        </div>
+
+        {loading && (
+        <div className="loader">
+          <RiLoaderFill className="spinner" />
+        </div>
+      )}
+
         <div className="task-cards-container">
           {filteredTasks.map((task, index) => (
             <TaskCard key={index} task={task} />
           ))}
 
-          
+
           {/* Add New Task Card */}
           <div
             className="add-task-card"
@@ -128,7 +152,7 @@ function TodoList() {
           },
         }}
       >
-        <DialogTitle style={{ backgroundColor: isDarkMode ? '#fff' : '#1e1e22', color: isDarkMode ? 'black' : 'white' , fontWeight: 'bold', fontSize: '24px', textAlign: 'center'}}>
+        <DialogTitle style={{ backgroundColor: isDarkMode ? '#fff' : '#1e1e22', color: isDarkMode ? 'black' : 'white', fontWeight: 'bold', fontSize: '24px', textAlign: 'center' }}>
           Create a Task
         </DialogTitle>
 
@@ -149,11 +173,11 @@ function TodoList() {
             }}
             style={{ marginBottom: '20px' }}
             sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: 'black' } } }}
-          />      
+          />
 
 
 
-         <h2 style={{ color: isDarkMode ? 'black' : 'white'  }}>Description</h2>
+          <h2 style={{ color: isDarkMode ? 'black' : 'white' }}>Description</h2>
           <TextField
             label="Description"
             variant="outlined"
@@ -173,7 +197,7 @@ function TodoList() {
             sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: 'black' } } }}
           />
 
-          
+
           <TextField
             label="Date"
             type="date"
@@ -186,9 +210,9 @@ function TodoList() {
             }}
             style={{ marginBottom: '20px' }}
             sx={{ '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: 'black' } } }}
-          />         
-          
-           <div className='checkbox'>
+          />
+
+          <div className='checkbox'>
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
               <FormControlLabel
                 control={

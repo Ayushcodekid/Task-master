@@ -43,18 +43,38 @@
 
 
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { FaSignOutAlt } from "react-icons/fa";
+
 import './Sidebar.css';
 import { UserContext } from '../Context/UserContext';
-import { MdDarkMode } from "react-icons/md";
+import { MdDarkMode, MdLightMode } from 'react-icons/md'; // Import both icons
 
 
 function Sidebar({ setFilter }) {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const { isDarkMode, toggleTheme } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext); // Assuming setUser is also provided
+  const navigate = useNavigate();
+
+  const username = user?.username;
+
+  console.log("username", username);
+
+
+
 
   const handleFilterClick = (filter) => {
     setFilter(filter);
     setSelectedFilter(filter);
+  };
+
+
+  const handleSignOut = () => {
+    // Clear user session
+    setUser(null); // Set user state to null or initial state
+    localStorage.removeItem('user'); // Optionally remove token from localStorage if stored
+    navigate('/'); // Redirect to the login page
   };
 
   return (
@@ -65,7 +85,7 @@ function Sidebar({ setFilter }) {
           alt="Profile"
           className="profile-img"
         />
-        <h3 className='profile-name'>Maclinz Maclinz</h3>
+        <h3 className='profile-name'> Welcome, {username}</h3>
       </div>
       <nav className="nav">
         <ul>
@@ -91,11 +111,13 @@ function Sidebar({ setFilter }) {
         </ul>
       </nav>
 
-      <div onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
-        <MdDarkMode className='dark-mode-icon'/>
-      </div>
+    
 
-      <button className="sign-out">Sign Out</button>
+      <div className="sign-out-container" onClick={handleSignOut}>
+        <FaSignOutAlt className='sign-out-icon'/>
+        <button className="sign-out" >Sign Out</button>
+
+      </div>
     </div>
   );
 }

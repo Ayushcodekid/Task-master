@@ -61,6 +61,8 @@
 import React, { useContext, useState } from 'react';
 import { AiFillDelete } from "react-icons/ai";
 import { MdEditDocument } from "react-icons/md";
+import { RiLoaderFill } from "react-icons/ri";
+
 import api from '../../api';
 import { UserContext } from '../Context/UserContext'; // Fetch userId from context
 import './Taskcard.css';
@@ -71,6 +73,7 @@ function TaskCard({ task }) {
   const { user } = useContext(UserContext);
   const userId = user?.userId;
   const { isDarkMode, toggleTheme } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
 
   const [isCompleted, setIsCompleted] = useState(!!task.completedOn); // Initialize state based on completedOn
@@ -80,8 +83,11 @@ function TaskCard({ task }) {
 
     if (confirmDelete) {
       try {
+        setLoading(true);
         await api.delete(`/todos/${userId}/${task.id}`);
         alert("Task deleted successfully!");
+        setLoading(false);
+
         // Here you might want to trigger a state update to remove the task from view
       } catch (error) {
         console.error('Error deleting task:', error);
@@ -92,9 +98,11 @@ function TaskCard({ task }) {
 
   const handleStatusToggle = async () => {
     try {
+      setLoading(true);
       const updatedStatus = !isCompleted;
       await api.patch(`/${task.id}/toggle-status`, { completedOn: updatedStatus ? new Date() : null });
       setIsCompleted(updatedStatus); // Update local state to reflect change
+      setLoading(false);
     } catch (error) {
       console.error('Error updating task status:', error);
       alert("Error updating task status. Please try again.");
@@ -108,6 +116,12 @@ function TaskCard({ task }) {
 
   return (
     <div className={`task-card ${isCompleted ? 'completed' : 'incomplete'}`}>
+
+       {loading && (
+        <div className="loader">
+          <RiLoaderFill className="spinner" />
+        </div>
+      )}
       <div className="task-footer">
 
         <div className='title-des'>

@@ -34,10 +34,35 @@ async function loginUser(req, res) {
             expiresIn: '1h' // Token expires in 1 hour
         });
         console.log('User ID:', user.id);
-        res.send({ message: 'Login successful', token, userId: user.id });
+        res.send({ message: 'Login successful', token, userId: user.id , username: user.username});
     } catch (error) {
         res.status(500).send({ message: 'Error logging in', error });
     }
 }
 
-module.exports = { loginUser, registeredUser };
+
+
+// // Fetch user details by userId
+// async function getUserDetails(req, res) {
+//     const { userId } = req.params;
+
+//     try {
+//         const user = await User.findById(userId);
+
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         // Only return necessary fields like username and email
+//         res.json({
+//             userId: user._id,
+//             username: user.username,
+//             email: user.email, // Include other fields if needed
+//         });
+//     } catch (error) {
+//         console.error('Error fetching user details:', error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// }
+
+module.exports = { registeredUser, loginUser };

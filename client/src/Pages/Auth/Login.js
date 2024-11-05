@@ -58,13 +58,13 @@ const Login = () => {
       console.log('API Response:', response.data);
       // login(response.data.token);
 
-      const { token, userId } = response.data;
+      const { token, userId , username} = response.data;
 
       if (!userId) {
         console.error("userId is undefined!"); // Log error if userId is missing
       }
 
-      setUser({userId, token});
+      setUser({userId, token, username});
 
 
       navigate('/todo');

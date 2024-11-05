@@ -4,7 +4,7 @@
    /* Sidebar container */
 .sidebar {
   width: 17%;
-  background-color: #1e1e22;
+  background-color: #1f1e1e;
   color: white;
   padding: 20px;
   display: flex;
@@ -18,6 +18,8 @@
 .sidebar.dark {
   background-color: whitesmoke; /* Dark background */
   color: #fff; /* Light text color */
+  border: 3px solid black;
+
 }
 
 /* Profile section */
@@ -117,36 +119,36 @@
 .sign-out {
   margin-top: auto;
   padding: 10px 20px;
-  font-size: 16px;
-  color: #ff5252;
+  font-size: 1.2rem;
+  color: white;
   background: none;
   border: none;
   cursor: pointer;
 }
 
 .sign-out:hover {
-  color: #ff7979;
+  color: #f83d3d;
 }
 
-
-.theme-toggle {
+.sign-out-container{
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: center; 
-  width: 100%; 
-  background: none;
-  border: none;
-  color: inherit; 
-  cursor: pointer;
-  margin-top: 20px; 
-  transition: color 0.3s; 
-  border-radius: 50%; 
-  font-size: 2rem;
+ 
 }
 
-.theme-toggle:hover {
-  color: #ff5252;
+.sign-out-container:hover{
+  color: #f83d3d;
 }
+
+.sign-out-icon{
+font-size: 1.5rem;
+}
+
+
+  
+
+
 
 
 .dark-mode-icon{
@@ -189,4 +191,20 @@
 
 .sidebar.dark .dark-mode-icon:hover{
   color: aquamarine;
+}
+
+.sidebar.dark .sign-out-container {
+  color: black; 
+}
+
+.sidebar.dark .sign-out-container:hover {
+  color: #f83d3d;
+}
+
+.sidebar.dark .sign-out {
+  color: black; 
+}
+
+.sidebar.dark .sign-out:hover {
+  color: #f83d3d;
 }
