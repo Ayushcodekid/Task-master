@@ -60,10 +60,10 @@ function TodoList() {
     const newTask = {
       title,
       description,
-      date,
+      date: date ? new Date(date).toISOString() : null, // Convert date to ISO string
       status: isCompleted ? 'Completed' : 'Incomplete',
       isImportant,
-      completedOn: isCompleted ? new Date().toISOString() : null, // Set completedOn if the task is marked completed
+      completedOn: isCompleted ? new Date().toISOString() : new Date().toISOString(), // Take today's date regardless
       userId, // Fetched from context
     };
 
@@ -80,7 +80,7 @@ function TodoList() {
       const response = await api.post('/todos', newTask);
       console.log('Task created successfully:', response.data.todo); // Log success response
       setTasks([...tasks, response.data.todo]); // Update the tasks list
-      
+
 
       // Reset form fields
       setTitle('');
@@ -109,7 +109,7 @@ function TodoList() {
       <Sidebar setFilter={setFilter} />
       <div className="tasks-container">
         <div className="tasks-header">
-          <h2 className='tasks-text'>{filter.charAt(0).toUpperCase() + filter.slice(1)} Tasks</h2>
+          <h2 className='section-title'>{filter.charAt(0).toUpperCase() + filter.slice(1)} Tasks</h2>
           <div onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
             {isDarkMode ? <MdLightMode className='light-mode-icon' style={{ color: 'black' }} /> : <MdDarkMode className='dark-mode-icon' style={{ color: 'white' }} />}
           </div>

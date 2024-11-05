@@ -58,13 +58,13 @@
 
 
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AiFillDelete } from "react-icons/ai";
 import { MdEditDocument } from "react-icons/md";
 import { RiLoaderFill } from "react-icons/ri";
 
 import api from '../../api';
-import { UserContext } from '../Context/UserContext'; // Fetch userId from context
+import { UserContext } from '../Context/UserContext'; 
 import './Taskcard.css';
 
 
@@ -78,6 +78,28 @@ function TaskCard({ task }) {
 
   const [isCompleted, setIsCompleted] = useState(!!task.completedOn); // Initialize state based on completedOn
 
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    async function fetchTasks() {
+      try {
+        setLoading(true);
+        const response = await api.get(`/todos/${userId}`);
+        setTasks(response.data);
+        setLoading(false);
+
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    }
+
+    if (userId) {
+      fetchTasks();
+    }
+  }, [userId]);
+
+
+
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this task?");
 
@@ -85,8 +107,10 @@ function TaskCard({ task }) {
       try {
         setLoading(true);
         await api.delete(`/todos/${userId}/${task.id}`);
-        alert("Task deleted successfully!");
         setLoading(false);
+        alert("Task deleted successfully!");
+        setTasks((prevTasks) => prevTasks.filter(t => t.id !== task.id)); // This assumes `tasks` is part of your component state.
+
 
         // Here you might want to trigger a state update to remove the task from view
       } catch (error) {
