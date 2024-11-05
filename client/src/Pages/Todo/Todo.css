@@ -46,6 +46,11 @@
 }
 
 
+.add-task-card:hover{
+  background-color: #2e2e3f;
+
+}
+
 
 
 
@@ -119,6 +124,35 @@
 }
 
 .blur {
-  filter: blur(5px); /* Adjust the blur intensity as needed */
-  transition: filter 0.2s ease; /* Smooth transition for blur effect */
+  filter: blur(5px); 
+  transition: filter 0.2s ease; 
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Dark mode styles */
+.app.dark .tasks-container {
+  background-color: whitesmoke; 
+  color: black; 
+}
+
+
+
+.app.dark .add-task-card {
+  color: black; 
+  opacity: 50%;
+  background: transparent;
+}
+
+
+.app.dark .add-task-card:hover {
+  background-color: #2e2e3f;
 }

@@ -70,6 +70,8 @@ import './Taskcard.css';
 function TaskCard({ task }) {
   const { user } = useContext(UserContext);
   const userId = user?.userId;
+  const { isDarkMode, toggleTheme } = useContext(UserContext);
+
 
   const [isCompleted, setIsCompleted] = useState(!!task.completedOn); // Initialize state based on completedOn
 

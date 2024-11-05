@@ -92,7 +92,7 @@ function Sidebar({ setFilter }) {
       </nav>
 
       <div onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
-        <MdDarkMode style={{color: 'black'}}/>
+        <MdDarkMode className='dark-mode-icon'/>
       </div>
 
       <button className="sign-out">Sign Out</button>
