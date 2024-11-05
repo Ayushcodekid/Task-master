@@ -13,6 +13,7 @@ import api from '../../api';
 import { UserContext } from '../Context/UserContext';
 import { MdDarkMode, MdLightMode } from 'react-icons/md'; // Import both icons
 import { RiLoaderFill } from "react-icons/ri";
+import LoadingScreen from '../Loader/Loading';
 
 import Sidebar from '../Sidebar/Sidebar';
 import TaskCard from '../Taskcard/Taskcard';
@@ -116,10 +117,9 @@ function TodoList() {
         </div>
 
         {loading && (
-        <div className="loader">
-          <RiLoaderFill className="spinner" />
-        </div>
-      )}
+          
+          <LoadingScreen/>
+        )}
 
         <div className="task-cards-container">
           {filteredTasks.map((task, index) => (

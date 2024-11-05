@@ -62,9 +62,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AiFillDelete } from "react-icons/ai";
 import { MdEditDocument } from "react-icons/md";
 import { RiLoaderFill } from "react-icons/ri";
+import LoadingScreen from '../Loader/Loading';
+
 
 import api from '../../api';
-import { UserContext } from '../Context/UserContext'; 
+import { UserContext } from '../Context/UserContext';
 import './Taskcard.css';
 
 
@@ -141,10 +143,8 @@ function TaskCard({ task }) {
   return (
     <div className={`task-card ${isCompleted ? 'completed' : 'incomplete'}`}>
 
-       {loading && (
-        <div className="loader">
-          <RiLoaderFill className="spinner" />
-        </div>
+      {loading && (
+        <LoadingScreen />
       )}
       <div className="task-footer">
 
@@ -153,12 +153,12 @@ function TaskCard({ task }) {
           <h2>{task.title}</h2>
           <p>{task.description}</p>
         </div>
-        </div><br></br>
+      </div><br></br>
 
-        <div className='date'>
-          <span className="task-date">{formatDate(task.completedOn)}</span>
-        </div>
-      
+      <div className='date'>
+        <span className="task-date">{formatDate(task.completedOn)}</span>
+      </div>
+
 
 
       <div className="task-actions">
