@@ -15,6 +15,8 @@ import { MdDarkMode, MdLightMode } from 'react-icons/md'; // Import both icons
 import { RiLoaderFill } from "react-icons/ri";
 import LoadingScreen from '../Loader/Loading';
 import toast, { Toaster } from 'react-hot-toast';
+import { FaSignOutAlt, FaBars } from 'react-icons/fa'; // Hamburger icon for mobile view
+
 
 
 import Sidebar from '../Sidebar/Sidebar';
@@ -38,6 +40,8 @@ function TodoList() {
   const [isCompleted, setCompleted] = useState(false);
   const [isImportant, setImportant] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false); // Track submission status
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to control sidebar open/close
+
 
   // Fetch tasks when the component loads
   useEffect(() => {
@@ -128,10 +132,26 @@ function TodoList() {
     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
   };
 
+
+
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen); // Toggle the sidebar visibility
+  };
+
+
+
+
   return (
-    <div className={`app ${isDarkMode ? 'dark' : ''} ${isModalOpen ? 'blur' : ''}`}>
-      <Sidebar setFilter={setFilter} />
+    <div className={`app ${isDarkMode ? 'dark' : ''} ${isModalOpen ? 'blur' : ''} `}>
+
+      <Sidebar setFilter={setFilter} isOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       <div className="tasks-container">
+
+        <div className="sidebar-toggle" onClick={toggleSidebar}>
+          <FaBars className="sidebar-toggle-icon" />
+        </div>
+
         <div className="tasks-header">
           <h2 className='section-title'>{filter.charAt(0).toUpperCase() + filter.slice(1)} Tasks</h2>
           <div onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
@@ -163,23 +183,29 @@ function TodoList() {
 
 
       {/* AddTaskModal */}
+
+  <div className='modal-container'>
       <Dialog
         className='modal-box'
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
         PaperProps={{
           style: {
-            backgroundColor: isDarkMode ? '#fff' : '#1e1e22',
-            width: '28%',
+            backgroundColor: isDarkMode ? '#fff' : '#1f1e1e',
+            marginLeft: '10%',
+            // width: '28%',
             borderRadius: '15px',
           },
         }}
+
+        maxWidth="xs"  
+        fullWidth={true}
       >
-        <DialogTitle style={{ backgroundColor: isDarkMode ? '#fff' : '#1e1e22', color: isDarkMode ? 'black' : 'white', fontWeight: 'bold', fontSize: '24px', textAlign: 'center' }}>
+        <DialogTitle style={{ backgroundColor: isDarkMode ? '#fff' : '#1f1e1e', color: isDarkMode ? 'black' : 'white', fontWeight: 'bold', fontSize: '24px', textAlign: 'center' }}>
           Create a Task
         </DialogTitle>
 
-        <DialogContent style={{ backgroundColor: isDarkMode ? '#fff' : '#1e1e22', scrollbarWidth: 'none', background: 'transparent', marginTop: '-5%' }}>
+        <DialogContent style={{ backgroundColor: isDarkMode ? '#fff' : '#1f1e1e', scrollbarWidth: 'none', background: 'transparent', marginTop: '-5%' }}>
           <h2 style={{ color: isDarkMode ? 'black' : 'white' }}>Title</h2>
           <TextField
             label="Title"
@@ -265,7 +291,7 @@ function TodoList() {
           </div>
         </DialogContent>
 
-        <DialogActions style={{ backgroundColor: isDarkMode ? '#fff' : '#1e1e22', }}>
+        <DialogActions style={{ backgroundColor: isDarkMode ? '#fff' : '#1f1e1e', }}>
           <Button onClick={() => setModalOpen(false)} style={{ color: '#fff', backgroundColor: '#ff5252' }}>
             Close
           </Button>
@@ -278,6 +304,7 @@ function TodoList() {
           </Button>
         </DialogActions>
       </Dialog>
+    </div>
     </div>
   );
 }
