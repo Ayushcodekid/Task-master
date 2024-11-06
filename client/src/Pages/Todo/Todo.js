@@ -14,6 +14,8 @@ import { UserContext } from '../Context/UserContext';
 import { MdDarkMode, MdLightMode } from 'react-icons/md'; // Import both icons
 import { RiLoaderFill } from "react-icons/ri";
 import LoadingScreen from '../Loader/Loading';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 import Sidebar from '../Sidebar/Sidebar';
 import TaskCard from '../Taskcard/Taskcard';
@@ -74,22 +76,26 @@ function TodoList() {
     }
 
     setSubmitting(true); // Set submitting to true
+    setModalOpen(false);
 
     try {
       setLoading(true);
+      toast.loading('Creating task...'); // Show loading toast
+
 
       const response = await api.post('/todos', newTask);
       console.log('Task created successfully:', response.data.todo); // Log success response
+
       setTasks([...tasks, response.data.todo]); // Update the tasks list
 
-
-      // Reset form fields
       setTitle('');
       setDescription('');
       setDate('');
       setCompleted(false);
       setImportant(false);
-      setModalOpen(false); // Close modal
+      toast.dismiss(); // Clear the loading toast
+      toast.success('Task created successfully!'); // Success notification
+
       setLoading(false);
     } catch (error) {
       console.error('Error creating task:', error.response?.data || error.message);
@@ -105,6 +111,23 @@ function TodoList() {
     return true; // For 'all', return all tasks
   });
 
+
+
+  // Function to update task status
+  const updateTaskStatus = (taskId, isCompleted) => {
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === taskId ? { ...task, completedOn: isCompleted ? new Date() : null } : task
+      )
+    );
+  };
+
+
+  // Function to remove task from the list
+  const onDeleteTask = (taskId) => {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+  };
+
   return (
     <div className={`app ${isDarkMode ? 'dark' : ''} ${isModalOpen ? 'blur' : ''}`}>
       <Sidebar setFilter={setFilter} />
@@ -117,13 +140,13 @@ function TodoList() {
         </div>
 
         {loading && (
-          
-          <LoadingScreen/>
+
+          <LoadingScreen />
         )}
 
         <div className="task-cards-container">
           {filteredTasks.map((task, index) => (
-            <TaskCard key={index} task={task} />
+            <TaskCard key={index} task={task} onUpdateStatus={updateTaskStatus} onDelete={onDeleteTask} />
           ))}
 
 
