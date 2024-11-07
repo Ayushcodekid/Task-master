@@ -138,6 +138,42 @@
 }
 
 
+
+
+.google-login-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.google-login-container button {
+  background-color: #4285F4; /* Google blue */
+  color: white;
+  font-size: 14px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.google-login-container button:hover {
+  background-color: #357AE8; /* Darker blue on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+.google-login-container button:active {
+  transform: scale(0.98); /* Small shrink effect when pressed */
+}
+
+.google-login-container .google-logo {
+  margin-right: 10px;
+}
+
+
+
 @media only screen and (max-width: 780px) {
   .register-body {
     background: url('./background.jpg') no-repeat;

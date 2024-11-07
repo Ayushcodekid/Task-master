@@ -153,6 +153,38 @@ button {
 }
 
 
+.google-login-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Style the Google login button */
+.google-login-btn .google-button {
+  background-color: #4285f4; /* Google's blue */
+  color: white;
+  font-size: 14px; /* Adjusted font size for a smaller button */
+  padding: 8px 20px; /* Padding for smaller button */
+  border-radius: 5px; /* Rounded corners */
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.google-login-btn .google-button:hover {
+  background-color: #357ae8; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+/* Optional: Add a shadow for a more 3D effect */
+.google-login-btn .google-button:active {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);
+}
+
+
+
 
 
 
