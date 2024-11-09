@@ -448,6 +448,18 @@ async function verifyGoogleToken(credential) {
 async function registeredUser(req, res) {
     try {
         const { email, username, password } = req.body;
+
+        // Check if the username or email already exists before creating the user
+        const existingUser = await User.findOne({ where: { username } });
+        if (existingUser) {
+            return res.status(400).json({ message: "Username is already taken. Please choose another." });
+        }
+
+        const existingEmail = await User.findOne({ where: { email } });
+        if (existingEmail) {
+            return res.status(400).json({ message: "Email is already registered." });
+        }
+
         const user = await User.create({ email, username, password });
         const token = generateToken(user);
 
