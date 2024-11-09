@@ -82,6 +82,7 @@ const Login = () => {
       }
 
       setUser({ userId, token, username, email });
+      toast.success('Login successful'); // Show success message via Toastify
 
       navigate('/todo');
     } catch (err) {
@@ -145,7 +146,23 @@ const Login = () => {
     <div className="login-body">
       <div className="login-container">
         <form className="login-form" onSubmit={handleSubmit}>
-          <h1 className="login-title" style={{color: 'white'}}>Login</h1>
+          <h1 className="login-title" style={{ color: 'white' }}>Login</h1>
+
+          {/* Google Login Button */}
+          <GoogleLogin
+            clientId={Client_ID}
+            buttonText="Login with Google"
+            onSuccess={handleGoogleLogin}
+            onFailure={handleGoogleFailure}
+            cookiePolicy="single_host_origin"
+            size="large"
+            shape="square"  
+            />
+
+
+
+
+
 
           <div className="input-container-login">
             <FaUser className="icon" />
@@ -181,7 +198,7 @@ const Login = () => {
 
           <div className="register-link">
             <Link to="/register">
-              <p style={{color: 'white'}}>Don't have an account? Register</p>
+              <p className="p-text" style={{ color: 'white' }}>Don't have an account? Register</p>
             </Link>
           </div>
 
@@ -190,16 +207,7 @@ const Login = () => {
         </form>
         {/* {errors.apiError && <p className="error-message">{errors.apiError}</p>} */}
 
-        {/* Google Login Button */}
-        <div className="google-login-btn">
-          <GoogleLogin
-            clientId={Client_ID}
-            buttonText="Login with Google"
-            onSuccess={handleGoogleLogin}
-            onFailure={handleGoogleFailure}
-            cookiePolicy="single_host_origin"
-          />
-        </div>
+
 
       </div>
       <Toaster position="top-center" />

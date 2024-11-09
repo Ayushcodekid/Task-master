@@ -1,8 +1,3 @@
-
-
-
-
-
 import { GoogleLogin } from '@react-oauth/google';
 import React, { useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
@@ -120,6 +115,11 @@ const Register = () => {
         <form className="register-form" onSubmit={handleSubmit}>
           <h2 className="register-title">Register</h2>
 
+          <GoogleLogin
+            onSuccess={handleGoogleLogin}
+            onFailure={() => toast.error("Google login failed")}
+          />
+
           <div className="input-container">
             <MdAlternateEmail className="icon" />
             <input
@@ -172,10 +172,7 @@ const Register = () => {
 
         <div className="google-login-btn">
 
-          <GoogleLogin
-            onSuccess={handleGoogleLogin}
-            onFailure={() => toast.error("Google login failed")}
-          />
+          
         </div>
       </div>
     </div>

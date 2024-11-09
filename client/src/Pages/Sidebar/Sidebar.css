@@ -1,7 +1,8 @@
 /* Sidebar container */
 .sidebar {
   width: 17%;
-  background-color: #1f1e1e;
+  /* background-color: #1f1e1e; */
+  background-image: radial-gradient(circle 1300px at 58% 90%, #243447, #0f0f14 70%);
   color: white;
   padding: 20px;
   display: flex;
@@ -13,7 +14,9 @@
 }
 
 .sidebar.dark {
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
+  background-image: radial-gradient(circle 1300px at 80% 100%, #e0f7fa, #f5f5f5 70%);
+
   /* Dark background */
   color: #fff;
   /* Light text color */
@@ -224,7 +227,8 @@ display: none;
 @media (max-width: 768px) {
   .sidebar {
     width: 43%;
-    background-color: #1f1e1e;
+    /* background-color: #1f1e1e; */
+    background-image: radial-gradient(circle 1300px at 58% 90%, #243447, #0f0f14 70%);
     color: white;
     padding: 20px;
     display: flex;

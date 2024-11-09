@@ -50,7 +50,7 @@
 .login-form input {
   display: flex;
   width: 85%;
-  height: 8vh;
+  height: 7vh;
   border-radius: 30px;
   text-align: center;
   background-color: transparent;
@@ -73,7 +73,7 @@
 }
 
 .login-title{
-  text-shadow: 0 0 10px rgba(73, 76, 212, 0.8);
+  text-shadow: 0 3px 10px rgba(92, 233, 27, 0.8);
   animation: float 3s ease-in-out infinite;
 }
 
@@ -86,7 +86,7 @@
 
 .login-button {
   width: 38%;
-  height: 7vh;
+  height: 6vh;
   border-radius: 23px;
   font-size: 1.3rem;
   border: 2px solid white;
@@ -165,29 +165,6 @@ button {
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-}
-
-/* Style the Google login button */
-.google-login-btn .google-button {
-  background-color: #4285f4; /* Google's blue */
-  color: white;
-  font-size: 14px; /* Adjusted font size for a smaller button */
-  padding: 8px 20px; /* Padding for smaller button */
-  border-radius: 5px; /* Rounded corners */
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.google-login-btn .google-button:hover {
-  background-color: #357ae8; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly enlarge the button on hover */
-}
-
-/* Optional: Add a shadow for a more 3D effect */
-.google-login-btn .google-button:active {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: scale(0.98);
 }
 
 
