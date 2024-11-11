@@ -40,7 +40,7 @@ function TodoList() {
   const [isCompleted, setCompleted] = useState(false);
   const [isImportant, setImportant] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false); // Track submission status
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // State to control sidebar open/close
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to control sidebar open/close
 
 
   // Fetch tasks when the component loads

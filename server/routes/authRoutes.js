@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/register', AuthController.registeredUser)
 router.post('/login', AuthController.loginUser)
+router.post('/verify-email', AuthController.verifyEmail)
 
 
 router.post('/todos', TodoController.createTodo);

@@ -13,7 +13,7 @@ import './Login.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    usernameOrEmail: '', // Field for either username or email
+    email: '', // Field for either username or email
     password: '',
   });
 
@@ -39,8 +39,12 @@ const Login = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.usernameOrEmail.trim()) {
-      newErrors.usernameOrEmail = 'Username or Email is required';
+    if (!formData.email.trim()) {
+      // newErrors.email = 'Email is required';
+      toast.error('Email is required');  // Show toast error for email validation
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      // newErrors.email = 'Please enter a valid email';
+      toast.error('Please enter a valid email');  // Show toast error for invalid email format
     }
 
     if (!formData.password) {
@@ -58,16 +62,17 @@ const Login = () => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       for (let error in validationErrors) {
-        toast.error(validationErrors[error]);  // Show error via Toastify
+        toast.error(validationErrors[error]);  
       }
       return;
     }
 
+    const loadingToast = toast.loading('Logging in...');
+
     setLoading(true);
 
     const loginData = {
-      username: formData.usernameOrEmail.includes('@') ? undefined : formData.usernameOrEmail,
-      email: formData.usernameOrEmail.includes('@') ? formData.usernameOrEmail : undefined,
+      email: formData.email, // Only sending email
       password: formData.password,
     };
 
@@ -108,6 +113,8 @@ const Login = () => {
 
     } finally {
       setLoading(false);
+      toast.dismiss(loadingToast); // Dismiss the loading toast
+
     }
   }
 
@@ -120,6 +127,7 @@ const Login = () => {
       console.error("No Google credential received");
       return;
     }
+    const loadingToast = toast.loading('Logging in with Google...');
 
     setLoading(true);
 
@@ -133,6 +141,8 @@ const Login = () => {
       setErrors({ apiError: "Google login failed. Please try again." });
     } finally {
       setLoading(false);
+      toast.dismiss(loadingToast); // Dismiss the loading toast
+
     }
   };
 
@@ -167,11 +177,11 @@ const Login = () => {
           <div className="input-container-login">
             <FaUser className="icon" />
             <input
-              type="text"
-              name="usernameOrEmail"
-              placeholder="Username or Email"
+              type="email" // Updated to email type
+              name="email"
+              placeholder="Email"
               onChange={handleChange}
-              value={formData.usernameOrEmail}
+              value={formData.email}
               className="login-input"
             />
           </div>
@@ -191,9 +201,7 @@ const Login = () => {
           {/* {errors.password && <p className="error-message">{errors.password}</p>} */}
 
           <div className="login-btn-form">
-            <button type="submit" className="login-button" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
-            </button><br />
+            <button type="submit" className="login-button" disabled={loading}>Login</button><br />
           </div>
 
           <div className="register-link">

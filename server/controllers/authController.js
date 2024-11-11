@@ -37,7 +37,7 @@
 //         });
 //         console.log('User ID:', user.id);
 //         res.send({ message: 'Login successful', token: jwtToken, userId: user.id , username: user.username});
-        
+
 //     } catch (error) {
 //         res.status(500).send({ message: 'Error logging in', error });
 //     }
@@ -51,19 +51,19 @@
 // async function googleLogin(req, res) {
 //     try {
 //       const { token } = req.body;
-      
+
 //       const ticket = await client.verifyIdToken({
 //         idToken: token,
 //         audience: process.env.GOOGLE_CLIENT_ID,
 //       });
 //       const payload = ticket.getPayload();
-  
+
 //       const googleId = payload['sub'];
 //       const email = payload['email'];
 //       const username = payload['name'];
-  
+
 //       let user = await User.findOne({ where: { email } });
-      
+
 //       if (!user) {
 //         user = await User.create({
 //           id: googleId,
@@ -72,28 +72,28 @@
 //           password: null,
 //         });
 //       }
-  
+
 //       console.log('JWT Secret:', process.env.JWT_SECRET); 
-  
+
 //       // Ensure JWT_SECRET is loaded correctly
 //       if (!process.env.JWT_SECRET) {
 //         throw new Error("JWT_SECRET is not defined in the environment variables");
 //       }
-  
+
 //       const jwtToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
 //         expiresIn: '1h',
 //       });
-  
+
 //       res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
 //       res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-  
+
 //       res.json({ success: true, userId: user.id, token: jwtToken, username: user.username });
 //     } catch (error) {
 //       console.error("Google login failed:", error);
 //       res.status(400).json({ success: false, message: 'Google login failed' });
 //     }
 //   }
-  
+
 
 // module.exports = { registeredUser, loginUser, googleLogin};
 
@@ -371,7 +371,7 @@
 //                 return res.status(401).json({ message: 'Please log in using Google' });
 //             }
 
-            
+
 
 //             if (user.authProvider !== 'google') {
 //                 const isMatch = await bcrypt.compare(password, user.password);
@@ -422,6 +422,8 @@ const bcrypt = require('bcryptjs');
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -434,6 +436,9 @@ function generateToken(user) {
         { expiresIn: '1h' }
     );
 }
+
+
+
 
 // Handle Google token verification
 async function verifyGoogleToken(credential) {
@@ -450,21 +455,39 @@ async function registeredUser(req, res) {
         const { email, username, password } = req.body;
 
         // Check if the username or email already exists before creating the user
-        const existingUser = await User.findOne({ where: { username } });
-        if (existingUser) {
-            return res.status(400).json({ message: "Username is already taken. Please choose another." });
-        }
+        // const existingUser = await User.findOne({ where: { username } });
+        // if (existingUser) {
+        //     return res.status(400).json({ message: "Username is already taken. Please choose another." });
+        // }
 
         const existingEmail = await User.findOne({ where: { email } });
         if (existingEmail) {
             return res.status(400).json({ message: "Email is already registered." });
         }
 
-        const user = await User.create({ email, username, password });
+
+        // Generate a verification code
+        const verificationCode = crypto.randomBytes(3).toString('hex'); // Example code format
+
+        // Create the user with verification code and set `verified` to false
+        const user = await User.create({
+            email,
+            username,
+            password,
+            verificationCode,
+            verified: false // User not verified initially
+        });
+        
+
+        await sendVerificationEmail(user.email, verificationCode);
+
+        
         const token = generateToken(user);
 
+
+
         res.status(201).json({
-            message: "User registered successfully",
+            message: "User registered successfully. Please check your email to verify your account.",
             user: { id: user.id, username: user.username, email: user.email },
             token
         });
@@ -476,12 +499,67 @@ async function registeredUser(req, res) {
 
 
 
+// Function to send verification email
+async function sendVerificationEmail(email, verificationCode) {
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Account Verification',
+        text: `Please verify your account by entering the following code: ${verificationCode}`
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
+
+
+
+async function verifyEmail(req, res) {
+    try {
+        const { email, code } = req.body;
+
+        // Find the user by email
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (user.verified) {
+            return res.status(400).json({ message: "User is already verified" });
+        }
+
+        // Check if the code matches
+        if (user.verificationCode === code) {
+            user.verified = true; // Mark user as verified
+            user.verificationCode = null; // Clear the verification code after use
+            await user.save();
+
+            return res.json({ message: "Account verified successfully" });
+        } else {
+            return res.status(400).json({ message: "Invalid verification code" });
+        }
+    } catch (error) {
+        console.error('Error during email verification:', error);
+        res.status(500).json({ message: 'Error verifying account', error: error.message });
+    }
+}
+
+
 
 
 
 async function loginUser(req, res) {
     try {
-        const { username, password, credential, email } = req.body;
+        const { password, credential, email } = req.body;
 
         // Check if Google credential is provided
         if (credential) {
@@ -496,6 +574,8 @@ async function loginUser(req, res) {
                         providerId,
                         authProvider: 'google',
                         password: null,
+                        verified: true,  // Set verified to true for Google users
+                        verificationCode: false,
                     });
                 }
 
@@ -507,24 +587,16 @@ async function loginUser(req, res) {
             }
         }
 
-        // Standard login with either username or email and password
-        if ((username || email) && password) {
-            let user;
-
-            // If username is provided, search by username
-            if (username) {
-                user = await User.findOne({ where: { username } });
-            } 
-            // If email is provided, search by email
-            else if (email) {
-                user = await User.findOne({ where: { email } });
-            }
+        // Standard email and password login
+        if (email && password) {
+            // Find user by email
+            const user = await User.findOne({ where: { email } });
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
-            // If the user is logged in through Google, don't check the password
+            // Ensure users registered with Google cannot use password login
             if (user.authProvider === 'google') {
                 return res.status(401).json({ message: 'Please log in using Google' });
             }
@@ -550,7 +622,11 @@ async function loginUser(req, res) {
 
 
 
-module.exports = { registeredUser, loginUser };
+
+
+
+
+module.exports = { registeredUser, loginUser, verifyEmail};
 
 
 

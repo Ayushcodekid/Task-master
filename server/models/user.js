@@ -1,71 +1,10 @@
-// const { DataTypes } = require('sequelize');
-// const sequelize = require('../db');
-// const bcrypt = require('bcryptjs');
-
-// const User = sequelize.define('User', {
-//   id: {
-//     type: DataTypes.UUID,
-//     defaultValue: DataTypes.UUIDV4,
-//     primaryKey: true,
-//   },
-//   email: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//     unique: true,
-//     validate: {
-//       isEmail: {
-//         msg: "Must be a valid email address"
-//       }
-//     }
-//   },
-//   username: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//     unique: true,
-//   },
-//   password: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-
-//   googleId: {
-//     type: DataTypes.STRING,
-//     unique: true, // Ensure googleId is unique
-//     allowNull: true, // Allow null if the user signed up without Google
-//   }
-// }, {
-//   timestamps: true, // Adds `createdAt` and `updatedAt` fields
-//   hooks: {
-//     beforeSave: async (user) => {
-//       if (user.changed('password')) {
-//         const salt = await bcrypt.genSalt(10);
-//         user.password = await bcrypt.hash(user.password, salt);
-//       }
-//     },
-//   },
-// });
-
-// module.exports = User;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const bcrypt = require('bcryptjs');
+
 
 const User = sequelize.define('User', {
   id: {
@@ -86,7 +25,7 @@ const User = sequelize.define('User', {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: false,
   },
   password: {
     type: DataTypes.STRING,
@@ -100,7 +39,16 @@ const User = sequelize.define('User', {
   authProvider: {
     type: DataTypes.STRING,
     allowNull: true, // authProvider can be null for regular users
-  }
+  },
+  verificationCode: {
+    type: DataTypes.STRING, // Corrected to DataTypes.STRING
+  },
+
+  verified: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false, // Ensures a default false value for verified
+  },
+  
 }, {
   timestamps: true, // Adds `createdAt` and `updatedAt` fields
   hooks: {

@@ -32,9 +32,9 @@
 
 
 .login-form {
-  width: 420px;
+  width: 470px;
   background: transparent;
-  border: 1px solid gray;
+  border: 2px solid white;
   backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
@@ -75,6 +75,7 @@
 .login-title{
   text-shadow: 0 3px 10px rgba(92, 233, 27, 0.8);
   animation: float 3s ease-in-out infinite;
+  font-size: 2.5rem;
 }
 
 
@@ -98,7 +99,7 @@
 .login-button:hover{
   transform: scale(1.02);
   color: #fff;
-  background: linear-gradient(250deg, rgb(97, 35, 243), rgb(34, 139, 238));
+  background: linear-gradient(270deg, #0f0f14, rgb(14, 66, 117));
   border: none;
 }
 
@@ -180,7 +181,7 @@ button {
 }
 
 .login-body{
-  background: url('./background.jpg') no-repeat;
+  background-image: radial-gradient(circle 1300px at 78% 78%, #243447, #0f0f14 70%);
   width: 100%;
   height: 100vh;
   display: flex;
@@ -263,7 +264,7 @@ button {
 .login-button:hover{
   transform: scale(1.02);
   color: #fff;
-  background: linear-gradient(250deg, rgb(97, 35, 243), rgb(34, 139, 238));
+  background: linear-gradient(270deg, #0f0f14, rgb(14, 66, 117));
   border: none;
 }
 
