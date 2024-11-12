@@ -4,7 +4,6 @@ import Login from "./Pages/Auth/Login"
 import Register from "./Pages/Auth/Register"
 import Todo from "./Pages/Todo/Todo"
 import { UserProvider } from "./Pages/Context/UserContext";
-import VerifyEmail from "./Pages/Auth/VerifyEmail"
 
 
 function App() {
@@ -14,7 +13,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/todo" element={<Todo />} />
 
 
