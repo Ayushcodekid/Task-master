@@ -127,6 +127,16 @@ function TodoList() {
   };
 
 
+
+  const handleUpdate = (taskId, newTitle, newDescription) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, title: newTitle, description: newDescription } : task
+      )
+    );
+  };
+
+
   // Function to remove task from the list
   const onDeleteTask = (taskId) => {
     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
@@ -166,7 +176,7 @@ function TodoList() {
 
         <div className="task-cards-container">
           {filteredTasks.map((task, index) => (
-            <TaskCard key={index} task={task} onUpdateStatus={updateTaskStatus} onDelete={onDeleteTask} />
+            <TaskCard key={index} task={task} onUpdateStatus={updateTaskStatus} onDelete={onDeleteTask} onUpdate={handleUpdate}/>
           ))}
 
 

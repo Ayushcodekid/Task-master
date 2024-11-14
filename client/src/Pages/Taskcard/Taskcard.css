@@ -123,6 +123,82 @@ flex-direction: column;
 
 
 
+
+/* Container for the editing inputs */
+.edit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  background: transparent;  
+  margin: 10px 0;
+}
+
+/* Styling for the input fields */
+.edit-input,
+.edit-textarea {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+/* Button container for layout */
+.edit-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 8px;
+}
+
+/* Styling for save button */
+.save-btn {
+  flex: 1;
+  padding: 10px 0;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+/* Styling for cancel button */
+.cancel-btn {
+  flex: 1;
+  padding: 10px 0;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333;
+}
+
+
+
+
+
+
+
+
+
 @media (max-width: 780px) {
 
   .task-card {
