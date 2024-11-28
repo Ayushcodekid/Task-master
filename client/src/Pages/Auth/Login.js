@@ -82,6 +82,9 @@ const Login = () => {
 
       const { token, userId, username, email } = response.data;
 
+      console.log("email", email);
+      
+
       if (!userId) {
         console.error("userId is undefined!"); // Log error if userId is missing
       }
@@ -133,9 +136,9 @@ const Login = () => {
 
     try {
       const googleResponse = await api.post('/login', { credential });
-      const { token, userId, username } = googleResponse.data;
+      const { token, userId, username, email } = googleResponse.data;
 
-      setUser({ userId, token, username });
+      setUser({ userId, token, username, email });
       navigate('/todo');
     } catch (err) {
       setErrors({ apiError: "Google login failed. Please try again." });

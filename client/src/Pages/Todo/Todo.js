@@ -16,7 +16,7 @@ import { RiLoaderFill } from "react-icons/ri";
 import LoadingScreen from '../Loader/Loading';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaSignOutAlt, FaBars } from 'react-icons/fa'; // Hamburger icon for mobile view
-
+import ChatSystem from "../Chat/Chat"
 
 
 import Sidebar from '../Sidebar/Sidebar';
@@ -315,6 +315,8 @@ function TodoList() {
         </DialogActions>
       </Dialog>
     </div>
+
+    <ChatSystem/>
     </div>
   );
 }

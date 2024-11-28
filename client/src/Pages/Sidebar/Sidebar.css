@@ -224,6 +224,27 @@ display: none;
 
 
 
+
+
+
+
+
+
+
+
+
+
+/* Modal Styling */
+.modal-container {
+  
+}
+
+
+
+
+
+
+
 @media (max-width: 768px) {
   .sidebar {
     width: 43%;

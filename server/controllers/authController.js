@@ -1,339 +1,146 @@
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const User = require('../models/user');
-// require('dotenv').config(); // To load environment variables
-// const { OAuth2Client } = require('google-auth-library');
-// const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID); // Use the environment variable
-
-// // Create a new user
-// async function registeredUser(req, res) {
-//     try {
-//         const { email, username, password } = req.body;
-//         const user = await User.create({ email, username, password });
-//         res.status(201).send({message:"User registered successfully", user});
-//     } catch (error) {
-//         res.status(500).send({ message: 'Error creating user', error });
-//     }
-// }
-
-// // Login user (password comparison & JWT token generation)
-// async function loginUser(req, res) {
-//     try {
-//         const { username, password } = req.body;
-//         const user = await User.findOne({ where: { username } });
-
-//         if (!user) {
-//             return res.status(404).send({ message: 'User not found' });
-//         }
-
-//         const isMatch = await bcrypt.compare(password, user.password);
-//         if (!isMatch) {
-//             return res.status(401).send({ message: 'Invalid password' });
-//         }
-
-//         // Generate JWT token
-//         const jwtToken  = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
-//             expiresIn: '1h' // Token expires in 1 hour
-//         });
-//         console.log('User ID:', user.id);
-//         res.send({ message: 'Login successful', token: jwtToken, userId: user.id , username: user.username});
-
-//     } catch (error) {
-//         res.status(500).send({ message: 'Error logging in', error });
-//     }
-// }
-
-
-
-
-
-
-// async function googleLogin(req, res) {
-//     try {
-//       const { token } = req.body;
-
-//       const ticket = await client.verifyIdToken({
-//         idToken: token,
-//         audience: process.env.GOOGLE_CLIENT_ID,
-//       });
-//       const payload = ticket.getPayload();
-
-//       const googleId = payload['sub'];
-//       const email = payload['email'];
-//       const username = payload['name'];
-
-//       let user = await User.findOne({ where: { email } });
-
-//       if (!user) {
-//         user = await User.create({
-//           id: googleId,
-//           email,
-//           username,
-//           password: null,
-//         });
-//       }
-
-//       console.log('JWT Secret:', process.env.JWT_SECRET); 
-
-//       // Ensure JWT_SECRET is loaded correctly
-//       if (!process.env.JWT_SECRET) {
-//         throw new Error("JWT_SECRET is not defined in the environment variables");
-//       }
-
-//       const jwtToken = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
-//         expiresIn: '1h',
-//       });
-
-//       res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-//       res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-
-//       res.json({ success: true, userId: user.id, token: jwtToken, username: user.username });
-//     } catch (error) {
-//       console.error("Google login failed:", error);
-//       res.status(400).json({ success: false, message: 'Google login failed' });
-//     }
-//   }
-
-
-// module.exports = { registeredUser, loginUser, googleLogin};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // const bcrypt = require('bcryptjs');
 // const { OAuth2Client } = require('google-auth-library');
-
 // const jwt = require('jsonwebtoken');
 // const User = require('../models/user');
-// require('dotenv').config(); // To load environment variables
-
+// const crypto = require('crypto');
+// const nodemailer = require('nodemailer');
+// require('dotenv').config();
 
 // const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+// // Generate JWT token
+// function generateToken(user) {
+//     return jwt.sign(
+//         { id: user.id, username: user.username },
+//         process.env.JWT_SECRET,
+//         { expiresIn: '1h' }
+//     );
+// }
 
-// // Create a new user
+
+
+
+// // Handle Google token verification
+// async function verifyGoogleToken(credential) {
+//     const ticket = await client.verifyIdToken({
+//         idToken: credential,
+//         audience: process.env.GOOGLE_CLIENT_ID,
+//     });
+//     return ticket.getPayload();
+// }
+
+// // Register a new user
 // async function registeredUser(req, res) {
 //     try {
 //         const { email, username, password } = req.body;
 
-//         // Create the user in the database
-//         const user = await User.create({ email, username, password });
+//         // Check if the username or email already exists before creating the user
+//         // const existingUser = await User.findOne({ where: { username } });
+//         // if (existingUser) {
+//         //     return res.status(400).json({ message: "Username is already taken. Please choose another." });
+//         // }
 
-//         // Generate JWT token for the newly registered user
-//         const token = jwt.sign(
-//             { id: user.id, username: user.username }, // Payload: user id and username
-//             process.env.JWT_SECRET,                    // Secret key for signing the token
-//             { expiresIn: '1h' }                       // Set the token to expire in 1 hour (adjust as needed)
-//         );
+//         const existingEmail = await User.findOne({ where: { email } });
+//         if (existingEmail) {
+//             return res.status(400).json({ message: "Email is already registered." });
+//         }
 
-//         // Send the response back to the frontend
-//         res.status(201).send({
-//             message: "User registered successfully",
-//             user: {
-//                 id: user.id,
-//                 username: user.username,
-//                 email: user.email
-//             },
-//             token: token // Send the token along with the user details
+
+//         // Generate a verification code
+//         const verificationCode = crypto.randomBytes(3).toString('hex'); // Example code format
+
+//         // Create the user with verification code and set `verified` to false
+//         const user = await User.create({
+//             email,
+//             username,
+//             password,
+//             verificationCode,
+//             verified: false // User not verified initially
 //         });
 
+
+//         await sendVerificationEmail(user.email, verificationCode);
+
+
+//         const token = generateToken(user);
+
+
+
+//         res.status(201).json({
+//             message: "User registered successfully. Please check your email to verify your account.",
+//             user: { id: user.id, username: user.username, email: user.email },
+//             token
+//         });
 //     } catch (error) {
 //         console.error('Error during user registration:', error);
-//         res.status(500).send({ message: 'Error creating user', error: error.message });
+//         res.status(500).json({ message: 'Error creating user', error: error.message });
 //     }
 // }
 
 
 
-
-
-// async function loginUser(req, res) {
-//     try {
-//         const { username, password, credential, tokenId } = req.body;
-
-//         // Case 1: Google OAuth login
-//         const googleToken = credential || tokenId; // Use either `credential` or `tokenId`
-//         if (googleToken) {
-//             console.log('Google login detected');
-
-//             try {
-//                 // Verify Google token
-//                 const ticket = await client.verifyIdToken({
-//                     idToken: googleToken,
-//                     audience: process.env.GOOGLE_CLIENT_ID, // Ensure this matches your Google OAuth client ID
-//                 });
-
-//                 const { sub: providerId, email, name: username } = ticket.getPayload();
-
-//                 console.log('Google token verified:', { providerId, email, username });
-
-//                 // Check if user already exists in the database
-//                 let user = await User.findOne({ where: { providerId, authProvider: 'google' } });
-
-//                 if (!user) {
-//                     console.log('User not found. Creating a new user...');
-//                     user = await User.create({
-//                         username,
-//                         email,
-//                         providerId,
-//                         authProvider: 'google',
-//                         password: null, // Set password to null for Google login
-//                     });
-//                     console.log('New user created:', user);
-//                 } else {
-//                     console.log('User already exists:', user);
-//                 }
-
-//                 // Generate JWT token for the user
-//                 const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
-//                     expiresIn: '1h',
-//                 });
-
-//                 console.log('Google login successful, sending response');
-//                 return res.json({ message: 'Google login successful', token, userId: user.id, username: user.username });
-//             } catch (error) {
-//                 console.error('Error during Google token verification:', error);
-//                 return res.status(500).json({ message: 'Google login failed', error: error.message });
-//             }
+// // Function to send verification email
+// async function sendVerificationEmail(email, verificationCode) {
+//     const transporter = nodemailer.createTransport({
+//         service: 'Gmail',
+//         auth: {
+//             user: process.env.EMAIL_USER,
+//             pass: process.env.EMAIL_PASS
 //         }
+//     });
 
-//         // Case 2: Standard login with username and password
-//         if (username && password) {
-//             const user = await User.findOne({ where: { username } });
+//     const mailOptions = {
+//         from: process.env.EMAIL_USER,
+//         to: email,
+//         subject: 'Account Verification',
+//         text: `Please verify your account by entering the following code: ${verificationCode}`
+//     };
 
-//             if (!user) {
-//                 console.log('User not found:', username);
-//                 return res.status(404).json({ message: 'User not found' });
-//             }
-
-//             // Check password if the user is not logged in via Google
-//             if (user.authProvider !== 'google') {
-//                 const isMatch = await bcrypt.compare(password, user.password);
-//                 if (!isMatch) {
-//                     console.log('Invalid password for user:', username);
-//                     return res.status(401).json({ message: 'Invalid password' });
-//                 }
-//             }
-
-//             // Generate JWT token for user
-//             const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
-//                 expiresIn: '1h',
-//             });
-
-//             console.log('Standard login successful, sending response');
-//             return res.json({ message: 'Login successful', token, userId: user.id, username: user.username });
-//         }
-
-//         // If neither Google token nor standard login credentials are provided
-//         return res.status(400).json({ message: 'Invalid login credentials' });
-
-//     } catch (error) {
-//         console.error('Error logging in:', error);
-//         res.status(500).json({ message: 'Error logging in', error: error.message });
-//     }
+//     await transporter.sendMail(mailOptions);
 // }
 
 
 
 
-
-// async function googleLogin(req, res) {
+// async function verifyEmail(req, res) {
 //     try {
-//         console.log('Incoming request for Google login:', req.body);
+//         const { email, code } = req.body;
 
-//         const { credential  } = req.body;
-
-//         if (!credential ) {
-//             console.error('No tokenId provided in the request');
-//             return res.status(400).json({ message: 'TokenId is required' });
-//         }
-
-//         // Verify Google token
-//         console.log('Verifying Google token...');
-//         const ticket = await client.verifyIdToken({
-//             idToken: credential ,
-//             audience: process.env.GOOGLE_CLIENT_ID, // Make sure this is correct
-//         });
-
-//         console.log('Google token verified:', ticket);
-
-//         const { sub: providerId, email, name: username } = ticket.getPayload();
-
-//         // Check if the user already exists
-//         console.log(`Checking if user with providerId ${providerId} exists...`);
-//         let user = await User.findOne({ where: { providerId, authProvider: 'google' } });
+//         // Find the user by email
+//         const user = await User.findOne({ where: { email } });
 
 //         if (!user) {
-//             // Create a new user if one does not exist
-//             console.log('User not found. Creating a new user...');
-//             user = await User.create({
-//                 username,
-//                 email,
-//                 providerId,
-//                 authProvider: 'google',
-//                 password: null, // Set password to null for Google login
-//             });
-//             console.log('New user created:', user);
-//         } else {
-//             console.log('User already exists:', user);
+//             return res.status(404).json({ message: "User not found" });
 //         }
 
-//         // Generate JWT token for the user
-//         console.log('Generating JWT token for user...');
-//         const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
-//             expiresIn: '1h',
-//         });
+//         if (user.verified) {
+//             return res.status(400).json({ message: "User is already verified" });
+//         }
 
-//         console.log('JWT token generated:', token);
+//         // Check if the code matches
+//         if (user.verificationCode === code) {
+//             user.verified = true; // Mark user as verified
+//             user.verificationCode = null; // Clear the verification code after use
+//             await user.save();
 
-//         // Set Cross-Origin-Opener-Policy and Cross-Origin-Embedder-Policy headers
-//         res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-//         res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-//         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with your frontend URL if different
-//         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-//         // Send the JWT token back to the frontend
-//         res.json({ message: 'Google login successful', token, userId: user.id, username: user.username });
+//             return res.json({ message: "Account verified successfully" });
+//         } else {
+//             return res.status(400).json({ message: "Invalid verification code" });
+//         }
 //     } catch (error) {
-//         console.error('Error during Google OAuth:', error);
-//         res.status(500).json({ message: 'Google login failed', error: error.message });
+//         console.error('Error during email verification:', error);
+//         res.status(500).json({ message: 'Error verifying account', error: error.message });
 //     }
 // }
 
-// module.exports = { registeredUser, loginUser, googleLogin };
 
 
 
 
-
-
-
-
-
-//login code
-
-// Login function for standard and Google login
 // async function loginUser(req, res) {
 //     try {
-//         const { username, password, credential, email } = req.body;
+//         const { password, credential, email } = req.body;
 
 //         // Check if Google credential is provided
 //         if (credential) {
@@ -348,6 +155,8 @@
 //                         providerId,
 //                         authProvider: 'google',
 //                         password: null,
+//                         verified: true,  // Set verified to true for Google users
+//                         verificationCode: false,
 //                     });
 //                 }
 
@@ -359,32 +168,31 @@
 //             }
 //         }
 
-//         // Standard login with username and password
-//         if (username && password) {
-//             const user = await User.findOne({ where: { username } });
+//         // Standard email and password login
+//         if (email && password) {
+//             // Find user by email
+//             const user = await User.findOne({ where: { email } });
 
 //             if (!user) {
 //                 return res.status(404).json({ message: 'User not found' });
 //             }
 
-//             if(user.authProvider === 'google') {
+//             // Ensure users registered with Google cannot use password login
+//             if (user.authProvider === 'google') {
 //                 return res.status(401).json({ message: 'Please log in using Google' });
 //             }
 
-
-
-//             if (user.authProvider !== 'google') {
-//                 const isMatch = await bcrypt.compare(password, user.password);
-//                 if (!isMatch) {
-//                     return res.status(403).json({ message: 'Invalid password' });
-//                 }
+//             // Check the password if it's not a Google login
+//             const isMatch = await bcrypt.compare(password, user.password);
+//             if (!isMatch) {
+//                 return res.status(403).json({ message: 'Invalid password' });
 //             }
 
 //             const token = generateToken(user);
 //             return res.json({ message: 'Login successful', token, userId: user.id, username: user.username });
 //         }
 
-//         // If neither Google token nor username-password is provided
+//         // If neither Google token nor username/email and password is provided
 //         return res.status(400).json({ message: 'Invalid login credentials' });
 //     } catch (error) {
 //         console.error('Error logging in:', error);
@@ -398,6 +206,8 @@
 
 
 
+
+// module.exports = { registeredUser, loginUser, verifyEmail};
 
 
 
@@ -421,75 +231,118 @@
 const bcrypt = require('bcryptjs');
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const sequelize = require('../db'); // Correct import for default export
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Generate JWT token
+// Function to generate JWT token
 function generateToken(user) {
     return jwt.sign(
-        { id: user.id, username: user.username },
+        { id: user.id, username: user.username, email: user.email },
         process.env.JWT_SECRET,
-        { expiresIn: '1h' }
+        { expiresIn: '1h' } // Token expires in 1 hour
     );
 }
 
 
 
 
-// Handle Google token verification
+// Verify Google token
 async function verifyGoogleToken(credential) {
-    const ticket = await client.verifyIdToken({
-        idToken: credential,
-        audience: process.env.GOOGLE_CLIENT_ID,
-    });
-    return ticket.getPayload();
+    if (!credential) {
+        throw new Error('Credential is required to verify the Google token');
+    }
+
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: process.env.GOOGLE_CLIENT_ID, // Ensure this is your correct Google client ID
+        });
+
+        const payload = ticket.getPayload(); // Returns Google user data
+
+        console.log('Google user payload:', payload);  // Log payload for debugging
+
+        return payload; // This contains user data (id, email, etc.)
+    } catch (error) {
+        console.error('Error during Google token verification:', error);
+        throw new Error('Google token verification failed');
+    }
 }
 
+
+
+
+// Send verification email
+async function sendVerificationEmail(email, verificationCode) {
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail', // Use Gmail for sending emails
+        auth: {
+            user: process.env.EMAIL_USER, // Your Gmail address
+            pass: process.env.EMAIL_PASS, // Your Gmail app password
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Account Verification',
+        text: `Your verification code is: ${verificationCode}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
+
+
+
+
 // Register a new user
-async function registeredUser(req, res) {
+async function registerdUser(req, res) {
     try {
         const { email, username, password } = req.body;
 
-        // Check if the username or email already exists before creating the user
-        // const existingUser = await User.findOne({ where: { username } });
-        // if (existingUser) {
-        //     return res.status(400).json({ message: "Username is already taken. Please choose another." });
-        // }
+        // Check if the email already exists
+        const [existingUser] = await sequelize.query(
+            'SELECT * FROM "Users" WHERE email = :email',
+            {
+                replacements: { email },
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
 
-        const existingEmail = await User.findOne({ where: { email } });
-        if (existingEmail) {
-            return res.status(400).json({ message: "Email is already registered." });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email is already registered.' });
         }
 
-
         // Generate a verification code
-        const verificationCode = crypto.randomBytes(3).toString('hex'); // Example code format
+        const verificationCode = crypto.randomBytes(3).toString('hex'); // 6-character code
 
-        // Create the user with verification code and set `verified` to false
-        const user = await User.create({
-            email,
-            username,
-            password,
-            verificationCode,
-            verified: false // User not verified initially
-        });
-        
+        // Hash password before saving to the database
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        await sendVerificationEmail(user.email, verificationCode);
+        // Insert the new user into the database
+        await sequelize.query(
+            'INSERT INTO "Users" (email, username, password, "verificationCode", verified) VALUES (:email, :username, :password, :verificationCode, :verified)',
+            {
+                replacements: {
+                    email,
+                    username,
+                    password: hashedPassword,
+                    verificationCode,
+                    verified: false, // User not verified initially
+                }
+            }
+        );
 
-        
-        const token = generateToken(user);
-
-
+        // Send verification email
+        await sendVerificationEmail(email, verificationCode);
 
         res.status(201).json({
-            message: "User registered successfully. Please check your email to verify your account.",
-            user: { id: user.id, username: user.username, email: user.email },
-            token
+            message: "User registered successfully. Please check your email to verify your account."
         });
     } catch (error) {
         console.error('Error during user registration:', error);
@@ -499,35 +352,25 @@ async function registeredUser(req, res) {
 
 
 
-// Function to send verification email
-async function sendVerificationEmail(email, verificationCode) {
-    const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
-
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: 'Account Verification',
-        text: `Please verify your account by entering the following code: ${verificationCode}`
-    };
-
-    await transporter.sendMail(mailOptions);
-}
 
 
 
 
+
+
+// Function to verify the email
 async function verifyEmail(req, res) {
     try {
         const { email, code } = req.body;
 
-        // Find the user by email
-        const user = await User.findOne({ where: { email } });
+        // Check if the user exists in the database
+        const [user] = await sequelize.query(
+            'SELECT * FROM "Users" WHERE email = :email',
+            {
+                replacements: { email },
+                type: sequelize.QueryTypes.SELECT
+            }
+        );
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -537,11 +380,16 @@ async function verifyEmail(req, res) {
             return res.status(400).json({ message: "User is already verified" });
         }
 
-        // Check if the code matches
-        if (user.verificationCode === code) {
-            user.verified = true; // Mark user as verified
-            user.verificationCode = null; // Clear the verification code after use
-            await user.save();
+        // Check if the verification code matches
+        if (user.verificationCode === code) { // Make sure this matches the column name exactly
+            // Mark the user as verified
+            await sequelize.query(
+                'UPDATE "Users" SET verified = true, "verificationcode" = null WHERE email = :email',
+                {
+                    replacements: { email },
+                    type: sequelize.QueryTypes.UPDATE
+                }
+            );
 
             return res.json({ message: "Account verified successfully" });
         } else {
@@ -554,64 +402,107 @@ async function verifyEmail(req, res) {
 }
 
 
-
-
-
+// Login user (email/password or Google login)
 async function loginUser(req, res) {
     try {
         const { password, credential, email } = req.body;
 
-        // Check if Google credential is provided
+        // Handle Google login
         if (credential) {
             try {
                 const { sub: providerId, email, name } = await verifyGoogleToken(credential);
 
-                let user = await User.findOne({ where: { providerId, authProvider: 'google' } });
+                // Check if the user already exists in the database
+                const [user] = await sequelize.query(
+                    'SELECT * FROM "Users" WHERE "providerId" = :providerId AND "authProvider" = :authProvider',
+                    {
+                        replacements: { providerId, authProvider: 'google' },
+                        type: sequelize.QueryTypes.SELECT
+                    }
+                );
+
                 if (!user) {
-                    user = await User.create({
-                        username: name,
-                        email,
-                        providerId,
-                        authProvider: 'google',
-                        password: null,
-                        verified: true,  // Set verified to true for Google users
-                        verificationCode: false,
+                    // Create new user from Google account
+                    await sequelize.query(
+                        'INSERT INTO "Users" ("username", "email", "providerId", "authProvider", "password", "verified") VALUES (:name, :email, :providerId, :authProvider, NULL, :verified)',
+                        {
+                            replacements: {
+                                name,
+                                email,
+                                providerId,
+                                authProvider: 'google',
+                                verified: true, // Google users are verified by default
+                            }
+                        }
+                    );
+
+                    // Fetch the newly created user
+                    const [newUser] = await sequelize.query(
+                        'SELECT * FROM "Users" WHERE "providerId" = :providerId AND "authProvider" = :authProvider',
+                        {
+                            replacements: { providerId, authProvider: 'google' },
+                            type: sequelize.QueryTypes.SELECT
+                        }
+                    );
+
+                    return res.json({
+                        message: 'Google login successful',
+                        userId: newUser.id,
+                        username: newUser.username,
+                        email: newUser.email
                     });
                 }
 
                 const token = generateToken(user);
-                return res.json({ message: 'Google login successful', token, userId: user.id, username: user.username });
+                return res.json({
+                    message: 'Google login successful',
+                    token,
+                    userId: user.id,
+                    username: user.username,
+                    email: user.email
+                });
             } catch (error) {
                 console.error('Error during Google token verification:', error);
                 return res.status(500).json({ message: 'Google login failed', error: error.message });
             }
         }
 
-        // Standard email and password login
+        // Handle standard login (email and password)
         if (email && password) {
             // Find user by email
-            const user = await User.findOne({ where: { email } });
+            const [user] = await sequelize.query(
+                'SELECT * FROM "Users" WHERE email = :email',
+                {
+                    replacements: { email },
+                    type: sequelize.QueryTypes.SELECT
+                }
+            );
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
 
             // Ensure users registered with Google cannot use password login
-            if (user.authProvider === 'google') {
+            if (user.authprovider === 'google') {
                 return res.status(401).json({ message: 'Please log in using Google' });
             }
 
-            // Check the password if it's not a Google login
+            // Compare passwords if it's a regular login
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(403).json({ message: 'Invalid password' });
             }
 
             const token = generateToken(user);
-            return res.json({ message: 'Login successful', token, userId: user.id, username: user.username });
+            return res.json({
+                message: 'Login successful',
+                token,
+                userId: user.id,
+                username: user.username,
+                email: user.email
+            });
         }
 
-        // If neither Google token nor username/email and password is provided
         return res.status(400).json({ message: 'Invalid login credentials' });
     } catch (error) {
         console.error('Error logging in:', error);
@@ -620,18 +511,7 @@ async function loginUser(req, res) {
 }
 
 
-
-
-
-
-
-
-module.exports = { registeredUser, loginUser, verifyEmail};
-
-
-
-
-
+module.exports = { registerdUser, loginUser, verifyEmail };
 
 
 
