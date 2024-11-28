@@ -50,7 +50,7 @@ const User = sequelize.define('User', {
   },
   
 }, {
-  timestamps: true, // Adds `createdAt` and `updatedAt` fields
+  timestamps: false, // Adds `createdAt` and `updatedAt` fields
   hooks: {
     beforeSave: async (user) => {
       // Check if the user is registering via Google
