@@ -56,7 +56,6 @@ const io = new Server(server, {
 
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST'],
   credentials: true,
 }));
 
@@ -103,48 +102,6 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
-
-
-
-
-// WebSocket setup
-// io.on('connection', (socket) => {
-//   console.log('User connected:', socket.id);
-
-//   // Join a project-specific chat room
-//   socket.on('joinProject', (projectId) => {
-//     socket.join(`project-${projectId}`);
-//     console.log(`User joined project ${projectId}`);
-//   });
-
-//   // Handle sending messages
-//   socket.on('sendMessage', async (data) => {
-//     const { projectId, senderEmail, message } = data;
-
-//     // Emit the message to all users in the same project room
-//     io.to(`project-${projectId}`).emit('receiveMessage', {
-//       senderEmail,
-//       message,
-//       createdAt: new Date(),
-//     });
-
-//     // Store the message in the database
-//     try {
-//       await sequelize.query(
-//         `INSERT INTO "chatmessages" ("projectId", "senderEmail", "message") VALUES (:projectId, :senderEmail, :message)`,
-//         { replacements: { projectId, senderEmail, message } }
-//       );
-//     } catch (err) {
-//       console.error('Error storing chat message:', err);
-//     }
-//   });
-
-//   // Handle user disconnection
-//   socket.on('disconnect', () => {
-//     console.log('User disconnected:', socket.id);
-//   });
-// });
-
 
 
 
