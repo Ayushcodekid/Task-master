@@ -384,7 +384,7 @@ async function verifyEmail(req, res) {
         if (user.verificationCode === code) { // Make sure this matches the column name exactly
             // Mark the user as verified
             await sequelize.query(
-                'UPDATE "Users" SET verified = true, "verificationcode" = null WHERE email = :email',
+                'UPDATE "Users" SET verified = true, "verificationCode" = null WHERE email = :email',
                 {
                     replacements: { email },
                     type: sequelize.QueryTypes.UPDATE
